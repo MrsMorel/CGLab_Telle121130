@@ -1,10 +1,11 @@
 #include "model.hpp"
+#include "Node.h"
 
-class GeometryNode
+class GeometryNode: public Node
 {
 public:
     GeometryNode();
-    virtual ~GeometryNode();
+    ~GeometryNode() override;
 
     model getGeometry();
     void setGeometry(model geometry);

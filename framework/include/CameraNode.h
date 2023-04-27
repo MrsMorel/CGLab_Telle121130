@@ -1,10 +1,11 @@
 #include <glm/gtx/transform.hpp>
+#include "Node.h"
 
-class CameraNode
+class CameraNode: public Node
 {
 public:
     CameraNode();
-    virtual ~CameraNode();
+    ~CameraNode() override;
 
     bool getPerspective();
     bool getEnabled();

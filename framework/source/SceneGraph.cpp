@@ -1,24 +1,29 @@
+#include <utility>
+#include <iostream>
+
 #include "../include/SceneGraph.h"
 
 SceneGraph::SceneGraph(std::string name, Node *root)
 {
-    this->name = name;
+    this->name = std::move(name);
     this->root = root;
 }
 
-SceneGraph::~SceneGraph() {}
+SceneGraph::~SceneGraph() = default;
 
 std::string SceneGraph::getName()
 {
+    return name;
 }
 
-void SceneGraph::setName(std::string name)
+void SceneGraph::setName(std::string new_name)
 {
-    this->name = name;
+    this->name = std::move(new_name);
 }
 
 Node *SceneGraph::getRoot()
 {
+    return root;
 }
 
 void SceneGraph::setRoot(Node *node)
@@ -28,4 +33,7 @@ void SceneGraph::setRoot(Node *node)
 
 std::string SceneGraph::printGraph()
 {
+    //TODO: implement for better debugging
+    std::cout << "Root" + getRoot()->getName() << "   " << '\n';
+    //print children on every layer?
 }

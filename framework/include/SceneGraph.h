@@ -1,6 +1,6 @@
 #include <string>
 #include "Node.h"
-
+//TODO make SceneGraph a Singleton (only one scenegraph should be allowed to exist)
 class SceneGraph
 {
 public:
