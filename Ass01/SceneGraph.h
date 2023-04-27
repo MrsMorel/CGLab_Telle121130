@@ -1,4 +1,5 @@
 #include <string>
+#include "Node.h"
 
 class SceneGraph
 {

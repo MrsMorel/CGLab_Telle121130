@@ -1,3 +1,5 @@
+#include "../framework/include/model.hpp"
+
 class GeometryNode
 {
 public:
