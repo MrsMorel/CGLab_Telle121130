@@ -1,4 +1,4 @@
-#include "CameraNode.h"
+#include "../include/CameraNode.h"
 
 CameraNode::CameraNode()
 {

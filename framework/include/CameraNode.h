@@ -1,6 +1,6 @@
 #include <glm/gtx/transform.hpp>
 
-class CameraNode()
+class CameraNode
 {
 public:
     CameraNode();

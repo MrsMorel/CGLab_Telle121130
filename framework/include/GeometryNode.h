@@ -1,4 +1,4 @@
-#include "../framework/include/model.hpp"
+#include "model.hpp"
 
 class GeometryNode
 {

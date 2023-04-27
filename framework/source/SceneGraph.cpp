@@ -1,4 +1,4 @@
-#include "SceneGraph.h"
+#include "../include/SceneGraph.h"
 
 SceneGraph::SceneGraph(std::string name, Node *root)
 {

@@ -1,4 +1,4 @@
-#include "GeometryNode.h"
+#include "../include/GeometryNode.h"
 
 GeometryNode::GeometryNode()
 {
