@@ -34,6 +34,6 @@ void SceneGraph::setRoot(Node *node)
 std::string SceneGraph::printGraph()
 {
     //TODO: implement for better debugging
-    std::cout << "Root" + getRoot()->getName() << "   " << '\n';
+    return "Root" + getRoot()->getName() ;
     //print children on every layer?
 }

@@ -1,10 +1,11 @@
+#include <utility>
+
 #include "../include/GeometryNode.h"
 
-GeometryNode::GeometryNode
-{
-}
+GeometryNode::GeometryNode():
+Node(){}
 
-GeometryNode::~GeometryNode() {}
+GeometryNode::~GeometryNode() = default;
 
 model GeometryNode::getGeometry()
 {
@@ -13,5 +14,5 @@ model GeometryNode::getGeometry()
 
 void GeometryNode::setGeometry(model new_geometry)
 {
-    this->geometry = new_geometry;
+    this->geometry = std::move(new_geometry);
 }
