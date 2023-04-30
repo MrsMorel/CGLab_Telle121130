@@ -29,12 +29,26 @@ void SceneGraph::setRoot(const Node& node)
 {
     root_ = node;
 }
+std::string printChild(const std::vector<std::shared_ptr<Node>>& children, bool hasChild){
+    for ( auto const& i : children) {
+        std::cout<< i->getName() << "  ->  ";
+        if (!i->getChildrenList().empty()){
+            printChild(i->getChildrenList(), false);
+        }
+        if (hasChild){
+            std::cout<<std::endl;
+        }
+
+    }
+}
 
 std::string SceneGraph::printGraph() const
 {
-    //TODO: implement for better debugging
-    return "Root" + getRoot().getName() ;
-    //print children on every layer?
+    std::cout<<"Root = " + getRoot().getName()<<std::endl;
+    std::cout<<"Children:  "<<std::endl;
+    std::vector<std::shared_ptr<Node>> children = root_.getChildrenList();
+    printChild(children, true);
+
 }
 
 
