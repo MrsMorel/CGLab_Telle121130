@@ -1,10 +1,9 @@
 #include "../include/CameraNode.h"
 
-CameraNode::CameraNode()
-{
-}
+CameraNode::CameraNode():
+        Node(){}
 
-CameraNode::~CameraNode() {}
+CameraNode::~CameraNode() = default;
 
 bool CameraNode::getPerspective()
 {

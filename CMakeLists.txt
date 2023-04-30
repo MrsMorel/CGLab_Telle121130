@@ -51,7 +51,7 @@ add_subdirectory(external/glbinding-2.1.1)
 
 # create framework helper library 
 file(GLOB FRAMEWORK_SOURCES framework/source/*.cpp)
-add_library(framework STATIC ${FRAMEWORK_SOURCES} ${TINYOBJLOADER_SOURCES})
+add_library(framework STATIC ${FRAMEWORK_SOURCES} ${TINYOBJLOADER_SOURCES} framework/source/PointLightNode.cpp)
 target_include_directories(framework PUBLIC framework/include)
 target_link_libraries(framework glbinding glfw ${GLFW_LIBRARIES})
 
@@ -67,7 +67,7 @@ if(NOT APPLE)
   option(BUILD_EXAMPLES     OFF)
 
   if(BUILD_EXAMPLES) 
-    add_executable(1_fixed application/source/application_fixed.cpp)
+    add_executable(1_fixed application/source/application_fixed.cpp framework/include/PointLightNode.h)
     target_link_libraries(1_fixed framework)
 
     add_executable(2_vbo application/source/application_vbo.cpp)
