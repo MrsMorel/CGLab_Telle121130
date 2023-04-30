@@ -1,33 +1,38 @@
 #include <string>
 #include <vector>
 #include <glm/gtx/transform.hpp>
+#include <memory>
 
 class Node
 {
 public:
     Node();
     virtual ~Node();
+    Node(std::string name);
+    Node(std::string name, glm::mat4 localTransform);
+    Node(std::string name, glm::mat4 localTransform, glm::mat4 worldTransform);
+    Node(std::string name, glm::mat4 localTransform, glm::mat4 worldTransform, int depth);
 
-    Node *getParent();
-    void setParent(Node *node);
-    Node *getChildren(std::string name);
-    std::vector<Node *> getChildrenList();
-    std::string getName();
-    std::string getPath();
-    int getDepth();
-    glm::mat4 getLocalTransform();
-    void setLocalTransform(glm::mat4 localTransform);
-    glm::mat4 getWorldTransform();
-    void setWorldTransform(glm::mat4 worldTransform);
-    void addChildren(Node *node);
-    Node *removeChildren(std::string name);
+    std::shared_ptr<Node> getParent() const;
+    void setParent(std::shared_ptr<Node> new_node);
+    std::shared_ptr<Node> getChildren(const std::string& name) const;
+    std::vector<std::shared_ptr<Node>> getChildrenList() const;
+    std::string getName() const;
+    std::string getPath() const;
+    int getDepth() const;
+    glm::mat4 getLocalTransform() const;
+    void setLocalTransform(const glm::mat4& localTransform);
+    glm::mat4 getWorldTransform() const;
+    void setWorldTransform(const glm::mat4& worldTransform);
+    void addChild(const std::shared_ptr<Node>& new_node);
+    Node removeChild(std::string name);
 
 private:
-    Node *parent;
-    std::vector<Node *> children;
-    std::string name;
-    std::string path;
-    int depth;
-    glm::mat4 localTransform;
-    glm::mat4 worldTransform;
+    std::shared_ptr<Node> parent_;
+    std::vector<std::shared_ptr<Node>> children_;
+    std::string name_;
+    std::string path_;
+    int depth_;
+    glm::mat4 localTransform_;
+    glm::mat4 worldTransform_;
 };
