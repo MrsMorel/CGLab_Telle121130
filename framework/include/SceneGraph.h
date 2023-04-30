@@ -4,16 +4,17 @@
 class SceneGraph
 {
 public:
-    SceneGraph(std::string name, Node *root);
-    virtual ~SceneGraph();
+    SceneGraph();
+    SceneGraph(std::string name, const Node& root);
+    ~SceneGraph();
 
-    std::string getName();
-    Node *getRoot();
-    std::string printGraph();
+    std::string getName() const;
+    Node getRoot() const;
+    std::string printGraph() const;
 
 private:
-    std::string name;
-    Node *root;
+    std::string name_;
+    Node root_;
     void setName(std::string name);
-    void setRoot(Node *node);
+    void setRoot(const Node& new_node);
 };
