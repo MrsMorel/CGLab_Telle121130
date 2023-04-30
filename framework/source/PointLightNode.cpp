@@ -1,5 +1,5 @@
 //
-// Created by xxann on 30.04.2023.
+// Created by anne on 30.04.2023.
 //
 #include "PointLightNode.h"
 PointLightNode::PointLightNode():
@@ -7,18 +7,25 @@ PointLightNode::PointLightNode():
 
 PointLightNode::~PointLightNode() = default;
 
-float PointLightNode::getLightIntensity() {
-    return LightIntensity_;
+float PointLightNode::getLightIntensity() const {
+    return lightIntensity_;
 }
 
 void PointLightNode::setLightIntensity(float new_LightIntensity) {
-    LightIntensity_ = new_LightIntensity;
+    lightIntensity_ = new_LightIntensity;
 }
 
-glm::vec3 PointLightNode::getLightColor() {
-    return LightColor_;
+glm::vec3 PointLightNode::getLightColor() const {
+    return lightColor_;
 }
 
-void PointLightNode::setLightColor(glm::vec3 new_LightColor) {
-    LightColor_ = new_LightColor;
+void PointLightNode::setLightColor(const glm::vec3& new_LightColor) {
+    lightColor_ = new_LightColor;
 }
+
+PointLightNode::PointLightNode(const glm::vec3& lightColor):
+lightColor_{lightColor}
+{}
+
+PointLightNode::PointLightNode(const glm::vec3& lightColor, float lightIntensity):
+lightIntensity_{lightIntensity}, lightColor_{lightColor}{}

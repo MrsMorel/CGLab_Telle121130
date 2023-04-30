@@ -9,14 +9,16 @@
 class PointLightNode: public Node {
 public:
     PointLightNode();
+    PointLightNode(const glm::vec3& lightColor);
+    PointLightNode(const glm::vec3& lightColor, float lightIntensity);
     ~PointLightNode() override;
-    float getLightIntensity();
+    float getLightIntensity() const;
     void setLightIntensity(float new_LightIntensity);
-    glm::vec3 getLightColor();
-    void setLightColor(glm::vec3 new_LightColor);
+    glm::vec3 getLightColor() const;
+    void setLightColor(const glm::vec3& new_LightColor);
 private:
-    float LightIntensity_;
-    glm::vec3 LightColor_;
+    float lightIntensity_{};
+    glm::vec3 lightColor_;
 };
 
 #endif //OPENGL_FRAMEWORK_POINTLIGHTNODE_H
