@@ -155,7 +155,7 @@ void ApplicationSolar::resizeCallback(unsigned width, unsigned height) {
   // upload new projection matrix
   uploadProjection();
 }
-
+//TODO implement initializeScenegraph function
 
 // exe entry point
 int main(int argc, char* argv[]) {

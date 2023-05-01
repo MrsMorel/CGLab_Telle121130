@@ -32,7 +32,7 @@ void SceneGraph::setRoot(const Node& node)
 std::string printChild(const std::vector<std::shared_ptr<Node>>& children, bool hasChild){
     for ( auto const& i : children) {
         std::cout<< i->getName() << "  ->  ";
-        if (!i->getChildrenList().empty()){
+        if (!i->getChildrenList().empty()){ 
             printChild(i->getChildrenList(), false);
         }
         if (hasChild){
