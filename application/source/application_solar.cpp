@@ -9,7 +9,7 @@
 // use gl definitions from glbinding 
 using namespace gl;
 
-//dont load gl bindings from glfw
+//don't load gl bindings from glfw
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
@@ -21,10 +21,11 @@ using namespace gl;
 
 ApplicationSolar::ApplicationSolar(std::string const& resource_path)
  :Application{resource_path}
+ ,sceneGraph_{}
  ,planet_object{}
- ,m_view_transform{glm::translate(glm::fmat4{}, glm::fvec3{0.0f, 0.0f, 4.0f})}
- ,m_view_projection{utils::calculate_projection_matrix(initial_aspect_ratio)}
+ ,m_view_transform{glm::translate(glm::fmat4{}, glm::fvec3{0.0f, 0.0f, 4.0f})}, m_view_projection{utils::calculate_projection_matrix(initial_aspect_ratio)}
 {
+  initializeSceneGraph();
   initializeGeometry();
   initializeShaderPrograms();
 }
@@ -155,7 +156,12 @@ void ApplicationSolar::resizeCallback(unsigned width, unsigned height) {
   // upload new projection matrix
   uploadProjection();
 }
+
+//function to connect scenegraph to application
+void ApplicationSolar::initializeSceneGraph() {
 //TODO implement initializeScenegraph function
+}
+
 
 // exe entry point
 int main(int argc, char* argv[]) {
