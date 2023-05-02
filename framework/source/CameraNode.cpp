@@ -1,4 +1,4 @@
-#include "../include/CameraNode.h"
+#include "CameraNode.h"
 
 CameraNode::CameraNode():
         Node(){}

@@ -1,8 +1,7 @@
 #include <glm/gtx/transform.hpp>
 #include "Node.h"
 
-class CameraNode: public Node
-{
+class CameraNode: public Node{
 public:
     CameraNode();
     ~CameraNode() override;

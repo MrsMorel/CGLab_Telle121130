@@ -6,6 +6,7 @@
 #include "structs.hpp"
 #include "SceneGraph.h"
 
+
 // gpu representation of model
 class ApplicationSolar : public Application {
  public:

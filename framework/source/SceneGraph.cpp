@@ -1,7 +1,7 @@
 #include <utility>
 #include <iostream>
 
-#include "../include/SceneGraph.h"
+#include "SceneGraph.h"
 //constructor
 SceneGraph::SceneGraph() = default;
 

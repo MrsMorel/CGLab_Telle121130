@@ -1,8 +1,9 @@
 #include <string>
 #include "Node.h"
+
 //TODO make SceneGraph a Singleton (only one scenegraph should be allowed to exist) ?
 
-/* SceneGprah class for constructing a tree made out of root, camera, pointlight and planets  */
+/* SceneGraph class for constructing a tree made out of root, camera, pointlight and planets  */
 class SceneGraph
 {
 public:

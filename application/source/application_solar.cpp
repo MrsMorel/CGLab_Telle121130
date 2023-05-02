@@ -5,6 +5,7 @@
 #include "shader_loader.hpp"
 #include "model_loader.hpp"
 
+
 #include <glbinding/gl/gl.h>
 // use gl definitions from glbinding 
 using namespace gl;
@@ -160,6 +161,32 @@ void ApplicationSolar::resizeCallback(unsigned width, unsigned height) {
 //function to connect scenegraph to application
 void ApplicationSolar::initializeSceneGraph() {
 //TODO implement initializeScenegraph function
+//root node
+Node root{"Root",glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f})};
+//Point Light
+
+//Camera
+//CameraNode cameraNode{};
+//Mercury
+
+//Venus
+
+//Earth
+
+//Moon
+
+//Mars
+
+//Jupiter
+
+//Saturn
+
+//Uranus
+
+//Neptun
+
+SceneGraph sceneGraph{"SceneGraph",root};
+sceneGraph.printGraph();
 }
 
 
