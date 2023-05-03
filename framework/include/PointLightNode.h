@@ -27,7 +27,7 @@ public:
 private:
     float lightIntensity_{};
     glm::vec3 lightColor_;
-    //glm::vec3 
+    //glm::vec3 position_
 };
 
 #endif //OPENGL_FRAMEWORK_POINTLIGHTNODE_H
