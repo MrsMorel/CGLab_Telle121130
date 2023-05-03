@@ -63,7 +63,7 @@ void ApplicationSolar::render() const {
             std::shared_ptr<Node> planetGeo = i->getChildren(i->getName()+"G"); //getting geometry of planet
             glm::mat4 matrix_rotation = glm::rotate(i->getParent()->getLocalTransform(), float(glfwGetTime()), glm::vec3{0.0f,1.0f,0.0f}); //float cast or else function doesn't work
             i->setLocalTransform(matrix_rotation * planetGeo->getLocalTransform());
-            matrix_render = glm::rotate(i->getLocalTransform(),float(glfwGetTime()), glm::vec3{0.0f,1.0f,0.0f});
+            matrix_render = glm::rotate(i->getLocalTransform(),float(glfwGetTime()), glm::vec3{0.0f,1.0f,0.0f}); //matrix for rendering with computed local transformation matrix
 
         } else { //Moon render
             std::shared_ptr<Node> moonGeo = i->getChildren("MoonG"); //getting geometry
@@ -194,17 +194,25 @@ void ApplicationSolar::mouseCallback(double pos_x, double pos_y) {
   // mouse handling
   //imagine dividing window with coordinate system in the middle -> 4 cases
     if (pos_x > 0){
-
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{-0.01f, 0.0f,0.0f});
+        uploadView();
     }
     if (pos_x < 0){
-
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.01f, 0.0f,0.0f});
+        uploadView();
     }
     if (pos_y > 0){
-
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.0f, 0.01f,0.0f});
+        uploadView();
     }
     if (pos_y < 0){
-
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.0f, -0.01f,0.0f});
+        uploadView();
     }
+    /*if (pos_y < 0 || pos_x < 0){
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{-0.01f, -0.01f,0.0f});
+        uploadView();
+    }*/
 }
 
 //handle resizing
