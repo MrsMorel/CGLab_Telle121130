@@ -14,7 +14,7 @@ public:
     Node(std::string name, glm::mat4 localTransform);
     Node(std::string name, glm::mat4 localTransform, glm::mat4 worldTransform);
     Node(std::string name, glm::mat4 localTransform, glm::mat4 worldTransform, std::shared_ptr<Node> parent);
-
+    Node(std::string name, const glm::mat4& localTransform, std::shared_ptr<Node> parent);
     Node(std::string name, glm::mat4 localTransform, glm::mat4 worldTransform, int depth);
 
     std::shared_ptr<Node> getParent() const;
@@ -29,7 +29,7 @@ public:
     glm::mat4 getWorldTransform() const;
     void setWorldTransform(const glm::mat4& worldTransform);
     void addChild(const std::shared_ptr<Node>& new_node);
-    Node removeChild(std::string name);
+    Node removeChild(const std::string& name);
 
 private:
     std::shared_ptr<Node> parent_;

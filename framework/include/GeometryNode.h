@@ -10,6 +10,7 @@ public:
     //constructor
     GeometryNode();
     GeometryNode(model geo);
+    GeometryNode(std::string name, const glm::mat4& localTransformation, std::shared_ptr<Node> parent);
     //constructor
     ~GeometryNode() override;
     //getter and setter

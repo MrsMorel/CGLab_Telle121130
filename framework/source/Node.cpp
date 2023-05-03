@@ -51,9 +51,7 @@ std::shared_ptr<Node> Node::getChildren(const std::string& name) const {
             return i;
         }
         else if (i->getChildren(name) == nullptr) continue;
-        else{
-            return i->getChildren(name);
-        }
+        else return i->getChildren(name);
 
     }
     return nullptr;
@@ -117,7 +115,7 @@ void Node::addChild(const std::shared_ptr<Node>& node) {
     children_.push_back(node);
 }
 //remove child node
-Node Node::removeChild(std::string name) {
+Node Node::removeChild(const std::string& name) {
     Node temp;
     Node temp2;
     for (auto const& i : children_) {
@@ -128,6 +126,11 @@ Node Node::removeChild(std::string name) {
         temp2 = temp;
     }
     return temp2;
+}
+
+Node::Node(std::string name, const glm::mat4& localTransform, std::shared_ptr<Node> parent):
+parent_{std::move(parent)}, name_{std::move(name)}, localTransform_{localTransform}{
+
 }
 
 

@@ -19,3 +19,7 @@ void GeometryNode::setGeometry(model new_geometry)
 //constructor with model
 GeometryNode::GeometryNode(model geo):
 Node(), geometry_{std::move(geo)}{}
+
+GeometryNode::GeometryNode(std::string name, const glm::mat4& localTransformation, std::shared_ptr<Node> parent):
+Node{std::move(name), localTransformation,std::move(parent) }{
+}

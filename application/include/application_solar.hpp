@@ -6,6 +6,8 @@
 #include "structs.hpp"
 #include "SceneGraph.h"
 #include "GeometryNode.h"
+#include "CameraNode.h"
+#include "PointLightNode.h"
 
 
 // gpu representation of model

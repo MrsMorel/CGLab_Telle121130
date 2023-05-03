@@ -164,38 +164,67 @@ void ApplicationSolar::initializeSceneGraph() {
 //root node
 Node root{"Root",glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f})};
 //Point Light
-
+PointLightNode pointLightNode;
 //Camera
-//CameraNode cameraNode{};
+CameraNode cameraNode{};
+
 //Mercury
-Node mercuryNode("Mercury" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f}) , std::make_shared<Node>(root));
-//GeometryNode mercuryGeo();
+    Node mercuryNode("Mercury" ,glm::translate({},glm::vec3{5.79f,0.0f,0.0f}),  std::make_shared<Node>(root));
+    GeometryNode mercuryGeo("MercuryG", glm::translate({},glm::vec3{5.79f,0.0f,0.0f}), std::make_shared<Node>(mercuryNode));
+    mercuryNode.addChild(std::make_shared<Node>(mercuryGeo)); //adding geonode to planetnode
+    root.addChild(std::make_shared<Node>(mercuryNode)); //adding node to root
 //Venus
-Node venusNode("Venus" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f}) , std::make_shared<Node>(root));
+    Node venusNode("Venus" ,glm::translate({},glm::vec3{10.82f,0.0f,0.0f}),  std::make_shared<Node>(root));
+    GeometryNode venusGeo("VenusG", glm::translate({},glm::vec3{10.82f,0.0f,0.0f}), std::make_shared<Node>(mercuryNode));
+    venusNode.addChild(std::make_shared<Node>(venusGeo));//adding geonode to planetnode
+    root.addChild(std::make_shared<Node>(venusNode));//adding node to root
+
 
 //Earth
-Node earthNode("Earth" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f}) , std::make_shared<Node>(root));
+    Node earthNode("Earth" ,glm::translate({},glm::vec3{14.96f,0.0f,0.0f}),  std::make_shared<Node>(root));
+    GeometryNode earthGeo("EarthG" ,glm::translate({},glm::vec3{14.96f,0.0f,0.0f}),  std::make_shared<Node>(root));
+    earthNode.addChild(std::make_shared<Node>(earthGeo));
 
-//Moon
-Node moonNode("Moon" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f}) , std::make_shared<Node>(earthNode));
+//Moon TODO
+    Node moonNode("Moon" ,glm::translate({},glm::vec3{1.0f,0.0f,0.0f}),  std::make_shared<Node>(earthNode)); //moon has earth as parent node
+    GeometryNode moonGeo("MoonG" ,glm::translate({},glm::vec3{1.0f,0.0f,0.0f}),  std::make_shared<Node>(earthNode));
+    moonNode.addChild(std::make_shared<Node>(moonGeo));
+    earthNode.addChild(std::make_shared<Node>(moonNode)); //earth node holds moon node
+    root.addChild(std::make_shared<Node>(earthNode));
 
 //Mars
-Node marsNode("Mars" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f}) , std::make_shared<Node>(root));
+    Node marsNode("Mars" ,glm::translate({},glm::vec3{22.8f,0.0f,0.0f}),  std::make_shared<Node>(root));
+    GeometryNode marsGeo("MarsG" ,glm::translate({},glm::vec3{22.8f,0.0f,0.0f}),  std::make_shared<Node>(root));
+    marsNode.addChild(std::make_shared<Node>(marsGeo));
+    root.addChild(std::make_shared<Node>(marsNode));
+
 
 //Jupiter
-Node jupiterNode("Jupiter" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f}) , std::make_shared<Node>(root));
+    Node jupiterNode("Jupiter" ,glm::translate({},glm::vec3{77.85f,0.0f,0.0f}),  std::make_shared<Node>(root));
+    GeometryNode jupiterGeo("jupiterG" ,glm::translate({},glm::vec3{77.85f,0.0f,0.0f}),  std::make_shared<Node>(root));
+    jupiterNode.addChild(std::make_shared<Node>(jupiterGeo));
+    root.addChild(std::make_shared<Node>(jupiterNode));
 
 //Saturn
-Node saturnNode("Saturn" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f}) , std::make_shared<Node>(root));
+    Node saturnNode("Saturn" ,glm::translate({},glm::vec3{143.2f,0.0f,0.0f}), std::make_shared<Node>(root));
+    GeometryNode saturnGeo("SaturnG" ,glm::translate({},glm::vec3{143.2f,0.0f,0.0f}),  std::make_shared<Node>(root));
+    saturnNode.addChild(std::make_shared<Node>(saturnGeo));
+    root.addChild(std::make_shared<Node>(saturnNode));
 
 //Uranus
-Node uranusNode("Uranus" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f}) , std::make_shared<Node>(root));
+    Node uranusNode("Uranus" ,glm::translate({},glm::vec3{250.0f,0.0f,0.0f}),  std::make_shared<Node>(root));
+    GeometryNode uranusGeo("UranusG" ,glm::translate({},glm::vec3{250.0f,0.0f,0.0f}),  std::make_shared<Node>(root));
+    uranusNode.addChild(std::make_shared<Node>(uranusGeo));
+    root.addChild(std::make_shared<Node>(uranusNode));
 
 //Neptun
-Node neptunNode("Neptun" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f}) , std::make_shared<Node>(root));
+    Node neptunNode("Neptun" ,glm::translate({},glm::vec3{500.0f,0.0f,0.0f}), std::make_shared<Node>(root));
+    GeometryNode neptunGeo("NeptunG" ,glm::translate({},glm::vec3{500.0f,0.0f,0.0f}),  std::make_shared<Node>(root));
+    neptunNode.addChild(std::make_shared<Node>(neptunGeo));
+    root.addChild(std::make_shared<Node>(neptunNode));
 
 SceneGraph sceneGraph{"SceneGraph",root};
-//sceneGraph.printGraph();
+sceneGraph.printGraph();
 }
 
 
