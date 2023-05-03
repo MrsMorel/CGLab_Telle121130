@@ -38,7 +38,7 @@ ApplicationSolar::~ApplicationSolar() {
 }
 
 void ApplicationSolar::render() const {
-    //TODO Render Planets
+    //TODO Render Planets correctly
     //making new list for only planets
     std::vector<std::shared_ptr<Node>> planets;
     // pushing planet nodes into new list
@@ -54,32 +54,37 @@ void ApplicationSolar::render() const {
     planets.push_back(sceneGraph_.getRoot().getChildren("Neptun"));
 
     for ( const std::shared_ptr<Node>& i : planets) {
-        // bind shader to upload uniforms
+
         glm::mat4 matrix_render; //solution after rotation
+        // bind shader to upload uniforms
         glUseProgram(m_shaders.at("planet").handle);
+
         if (i->getName() != "Moon"){ //all the planets (moon is not a planet)
             std::shared_ptr<Node> planetGeo = i->getChildren(i->getName()+"G"); //getting geometry of planet
             glm::mat4 matrix_rotation = glm::rotate(i->getParent()->getLocalTransform(), float(glfwGetTime()), glm::vec3{0.0f,1.0f,0.0f}); //float cast or else function doesn't work
-            planetGeo->getParent()->setLocalTransform(matrix_rotation * planetGeo->getLocalTransform());
-            matrix_render = glm::rotate(planetGeo->getParent()->getLocalTransform(),float(glfwGetTime()), glm::vec3{0.0f,1.0f,0.0f});
+            i->setLocalTransform(matrix_rotation * planetGeo->getLocalTransform());
+            matrix_render = glm::rotate(i->getLocalTransform(),float(glfwGetTime()), glm::vec3{0.0f,1.0f,0.0f});
 
         } else { //Moon render
             std::shared_ptr<Node> moonGeo = i->getChildren("MoonG"); //getting geometry
             glm::mat4 matrix_rotation = glm::rotate(i->getParent()->getLocalTransform(), float(glfwGetTime()), glm::vec3{0.0f,1.0f,0.0f}); //float cast or else function doesn't work
-            moonGeo->getParent()->setLocalTransform( matrix_rotation * moonGeo->getLocalTransform()); //multiplying rotation matrix with moon geometry local transform for translating
-            matrix_render = glm::rotate(moonGeo->getParent()->getLocalTransform(),float(glfwGetTime()), glm::vec3{0.0f,1.0f,0.0f});
+            i->setLocalTransform( matrix_rotation * moonGeo->getLocalTransform()); //multiplying rotation matrix with moon geometry local transform for translating
+            matrix_render = glm::rotate(i->getLocalTransform(),float(glfwGetTime()), glm::vec3{0.0f,1.0f,0.0f});
         }
-
+        //uniformmatrix with matrix_render solution
         glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ModelMatrix"),
                            1, GL_FALSE, glm::value_ptr(matrix_render));
-        matrix_render = glm::inverseTranspose(glm::inverse(m_view_transform)* matrix_render);
+        //bind the VAO to draw
         glBindVertexArray(planet_object.vertex_AO);
+        //draw bound vertex array using bound shader
         glDrawElements(planet_object.draw_mode, planet_object.num_elements, model::INDEX.type, NULL);
 
     }
+    // bind shader to upload uniforms
     glUseProgram(m_shaders.at("planet").handle);
     glm::fmat4 model_matrix = glm::rotate(glm::fmat4{}, float(glfwGetTime()), glm::fvec3{0.0f, 0.0f, 1.0f});
     model_matrix = glm::translate(model_matrix, glm::fvec3{0.0f, 0.0f, -1.0f});
+
     glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ModelMatrix"),
                        1, GL_FALSE, glm::value_ptr(model_matrix));
     // extra matrix for normal transformation to keep them orthogonal to surface
@@ -187,6 +192,19 @@ void ApplicationSolar::keyCallback(int key, int action, int mods) {
 //handle delta mouse movement input
 void ApplicationSolar::mouseCallback(double pos_x, double pos_y) {
   // mouse handling
+  //imagine dividing window with coordinate system in the middle -> 4 cases
+    if (pos_x > 0){
+
+    }
+    if (pos_x < 0){
+
+    }
+    if (pos_y > 0){
+
+    }
+    if (pos_y < 0){
+
+    }
 }
 
 //handle resizing
@@ -200,7 +218,7 @@ void ApplicationSolar::resizeCallback(unsigned width, unsigned height) {
 //function to connect scenegraph to application
 void ApplicationSolar::initializeSceneGraph() {
 //root node
-    Node root{"Root",glm::translate({},glm::vec3{1.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f})};
+    Node root{"Root",glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f})};
 //Point Light
     PointLightNode pointLightNode;
     GeometryNode sunGeometry; //TODO
