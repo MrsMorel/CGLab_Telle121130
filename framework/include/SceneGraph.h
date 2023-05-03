@@ -1,3 +1,5 @@
+#ifndef OPENGL_FRAMEWORK_SCENEGRAPH_H
+#define OPENGL_FRAMEWORK_SCENEGRAPH_H
 #include <string>
 #include "Node.h"
 
@@ -23,3 +25,4 @@ private:
     void setName(std::string name);
     void setRoot(const Node& new_node);
 };
+#endif //OPENGL_FRAMEWORK_SCENEGRAPH_H
