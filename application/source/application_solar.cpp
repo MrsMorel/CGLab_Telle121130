@@ -193,6 +193,23 @@ void ApplicationSolar::keyCallback(int key, int action, int mods) {
 void ApplicationSolar::mouseCallback(double pos_x, double pos_y) {
   // mouse handling
   //imagine dividing window with coordinate system in the middle -> 4 cases
+  /*
+    if (pos_x > 0 && pos_y > 0){
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.01f, 0.01f,0.0f});
+        uploadView();
+    }
+    if (pos_x < 0 && pos_y > 0){
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{-0.01f, 0.01f,0.0f});
+        uploadView();
+    }
+    if (pos_y < 0 && pos_x > 0){
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.01f, -0.01f,0.0f});
+        uploadView();
+    }
+    if (pos_y < 0 && pos_x < 0){
+        m_view_transform = glm::translate(m_view_transform, glm::fvec3{-0.01f, -0.01f,0.0f});
+        uploadView();
+    }*/
     if (pos_x > 0){
         m_view_transform = glm::translate(m_view_transform, glm::fvec3{-0.01f, 0.0f,0.0f});
         uploadView();
@@ -209,10 +226,6 @@ void ApplicationSolar::mouseCallback(double pos_x, double pos_y) {
         m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.0f, -0.01f,0.0f});
         uploadView();
     }
-    /*if (pos_y < 0 || pos_x < 0){
-        m_view_transform = glm::translate(m_view_transform, glm::fvec3{-0.01f, -0.01f,0.0f});
-        uploadView();
-    }*/
 }
 
 //handle resizing
