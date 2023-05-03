@@ -33,7 +33,7 @@ class ApplicationSolar : public Application {
  protected:
   void initializeShaderPrograms();
   void initializeGeometry();
-  void initializeSceneGraph();//TODO
+  static void initializeSceneGraph();//TODO
   // update uniform values
   void uploadUniforms();
   // upload projection matrix

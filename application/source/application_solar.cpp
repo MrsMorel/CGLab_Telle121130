@@ -38,6 +38,8 @@ ApplicationSolar::~ApplicationSolar() {
 }
 
 void ApplicationSolar::render() const {
+    //TODO Render Planets
+
   // bind shader to upload uniforms
   glUseProgram(m_shaders.at("planet").handle);
 
@@ -167,7 +169,7 @@ void ApplicationSolar::initializeSceneGraph() {
     GeometryNode sunGeometry; //TODO
     root.addChild(std::make_shared<Node>(pointLightNode));
 //Camera
-    CameraNode cameraNode{};
+    CameraNode cameraNode{}; //TODO
     root.addChild(std::make_shared<Node>(cameraNode));
 
 //Mercury
