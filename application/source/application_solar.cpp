@@ -168,25 +168,34 @@ Node root{"Root",glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {
 //Camera
 //CameraNode cameraNode{};
 //Mercury
-
+Node mercuryNode("Mercury" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f}) , std::make_shared<Node>(root));
+//GeometryNode mercuryGeo();
 //Venus
+Node venusNode("Venus" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f}) , std::make_shared<Node>(root));
 
 //Earth
+Node earthNode("Earth" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f}) , std::make_shared<Node>(root));
 
 //Moon
+Node moonNode("Moon" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f}) , std::make_shared<Node>(earthNode));
 
 //Mars
+Node marsNode("Mars" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f}) , std::make_shared<Node>(root));
 
 //Jupiter
+Node jupiterNode("Jupiter" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f}) , std::make_shared<Node>(root));
 
 //Saturn
+Node saturnNode("Saturn" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f}) , std::make_shared<Node>(root));
 
 //Uranus
+Node uranusNode("Uranus" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f}) , std::make_shared<Node>(root));
 
 //Neptun
+Node neptunNode("Neptun" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f}) , std::make_shared<Node>(root));
 
 SceneGraph sceneGraph{"SceneGraph",root};
-sceneGraph.printGraph();
+//sceneGraph.printGraph();
 }
 
 

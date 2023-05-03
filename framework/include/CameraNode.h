@@ -1,3 +1,5 @@
+#ifndef OPENGL_FRAMEWORK_CAMERANODE_H
+#define OPENGL_FRAMEWORK_CAMERANODE_H
 #include <glm/gtx/transform.hpp>
 #include "Node.h"
 
@@ -17,3 +19,4 @@ private:
     bool isEnabled;
     glm::mat4 projectionMatrix;
 };
+#endif //OPENGL_FRAMEWORK_CAMERANODE_H

@@ -5,6 +5,7 @@
 #include "model.hpp"
 #include "structs.hpp"
 #include "SceneGraph.h"
+#include "GeometryNode.h"
 
 
 // gpu representation of model

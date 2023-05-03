@@ -1,3 +1,5 @@
+#ifndef OPENGL_FRAMEWORK_NODE_H
+#define OPENGL_FRAMEWORK_NODE_H
 #include <string>
 #include <vector>
 #include <glm/gtx/transform.hpp>
@@ -11,6 +13,8 @@ public:
     Node(std::string name);
     Node(std::string name, glm::mat4 localTransform);
     Node(std::string name, glm::mat4 localTransform, glm::mat4 worldTransform);
+    Node(std::string name, glm::mat4 localTransform, glm::mat4 worldTransform, std::shared_ptr<Node> parent);
+
     Node(std::string name, glm::mat4 localTransform, glm::mat4 worldTransform, int depth);
 
     std::shared_ptr<Node> getParent() const;
@@ -36,3 +40,4 @@ private:
     glm::mat4 localTransform_;
     glm::mat4 worldTransform_;
 };
+#endif //OPENGL_FRAMEWORK_NODE_H

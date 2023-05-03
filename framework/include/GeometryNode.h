@@ -1,3 +1,5 @@
+#ifndef OPENGL_FRAMEWORK_GEOMETRYNODE_H
+#define OPENGL_FRAMEWORK_GEOMETRYNODE_H
 #include "model.hpp"
 #include "Node.h"
 
@@ -17,3 +19,4 @@ public:
 private:
     model geometry_;
 };
+#endif //OPENGL_FRAMEWORK_GEOMETRYNODE_H

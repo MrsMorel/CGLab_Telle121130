@@ -1,14 +1,14 @@
 #include <utility>
 
-#include "../include/Node.h"
-
+#include "Node.h"
+//default constructor
 Node::Node():
 name_{"default node"}
 {
 }
-
+//destructor
 Node::~Node() {}
-
+//constructors
 Node::Node(std::string name):
 name_{std::move(name)}
 {}
@@ -23,7 +23,12 @@ name_{name}, localTransform_{localTransform}, worldTransform_{worldTransform}{}
 
 Node::Node(std::string name, glm::mat4 localTransform, glm::mat4 worldTransform, int depth):
 name_{name}, localTransform_{localTransform}, worldTransform_{worldTransform}{}
+Node::Node(std::string name, glm::mat4 localTransform, glm::mat4 worldTransform, std::shared_ptr<Node> parent):
+        parent_{parent}, name_{name}, localTransform_{localTransform}, worldTransform_{worldTransform}{
 
+}
+
+//getter for parent node
 std::shared_ptr<Node> Node::getParent() const {
     if (parent_ != nullptr) {
         return parent_;
@@ -32,11 +37,11 @@ std::shared_ptr<Node> Node::getParent() const {
         return std::make_shared<Node>("error no parent");
     }
 }
-
+//setter for parent node
 void Node::setParent(std::shared_ptr<Node> new_node) {
     parent_ = std::move(new_node);
 }
-
+//returns child of one node
 std::shared_ptr<Node> Node::getChildren(const std::string& name) const {
     if (children_.empty()){
         return nullptr;
@@ -53,7 +58,7 @@ std::shared_ptr<Node> Node::getChildren(const std::string& name) const {
     }
     return nullptr;
 }
-
+//getter
 std::vector<std::shared_ptr<Node>> Node::getChildrenList() const {
     return children_;
 }
@@ -61,7 +66,7 @@ std::vector<std::shared_ptr<Node>> Node::getChildrenList() const {
 std::string Node::getName() const {
     return name_;
 }
-
+//TODO Test
 //is the get path also setting the path?
 std::string Node::getPath() const {
     std::string temp_path;
@@ -72,7 +77,7 @@ std::string Node::getPath() const {
     }
     return temp_path;
 }
-
+//Todo test
 int Node::getDepth() const {
     int depth = 1;
     for (auto const& i : this->getChildrenList()) {
@@ -87,7 +92,7 @@ int Node::getDepth() const {
     }
     return depth;
 }
-
+//getter
 glm::mat4 Node::getLocalTransform() const {
     return localTransform_;
 }
@@ -103,14 +108,15 @@ glm::mat4 Node::getWorldTransform() const {
     }
     return parent_->getWorldTransform() * localTransform_;
 }
-
+//setter
 void Node::setWorldTransform(const glm::mat4& worldTransform) {
     worldTransform_ = worldTransform;
 }
-
+//adding child node
 void Node::addChild(const std::shared_ptr<Node>& node) {
     children_.push_back(node);
 }
+//remove child node
 Node Node::removeChild(std::string name) {
     Node temp;
     Node temp2;
@@ -123,6 +129,8 @@ Node Node::removeChild(std::string name) {
     }
     return temp2;
 }
+
+
 
 
 
