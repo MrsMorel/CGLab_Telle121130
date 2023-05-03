@@ -23,6 +23,15 @@ void PointLightNode::setLightColor(const glm::vec3& new_LightColor) {
     lightColor_ = new_LightColor;
 }
 
+
+//void PointLightNode::setLightPosition(const glm::vec3& new_Position) {
+    //position_ = new_Position;
+//}
+
+//glm::vec3 PointLightNode::getLightPosition() const {
+    //return position_;
+//}
+
 PointLightNode::PointLightNode(const glm::vec3& lightColor):
 lightColor_{lightColor}
 {}
