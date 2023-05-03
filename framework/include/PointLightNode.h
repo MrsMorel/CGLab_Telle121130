@@ -11,8 +11,9 @@ class PointLightNode: public Node {
 public:
     //constructor
     PointLightNode();
-    //PointLightNode(const glm::vec3& lightColor);
-    PointLightNode(const glm::vec3& lightColor, float lightIntensity); //Do we need to add const glm::vec3
+    PointLightNode(const glm::vec3& lightColor);
+    PointLightNode(const glm::vec3& lightColor, float lightIntensity); 
+    //Do we need to add const glm::vec3 position
     ~PointLightNode() override; //destructor
     //getter and setter
     float getLightIntensity() const;
