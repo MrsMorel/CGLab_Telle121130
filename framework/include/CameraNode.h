@@ -2,6 +2,8 @@
 #define OPENGL_FRAMEWORK_CAMERANODE_H
 #include <glm/gtx/transform.hpp>
 #include "Node.h"
+#
+
 /* for camera derived from node*/
 class CameraNode: public Node{
 public:
