@@ -1,4 +1,5 @@
 #include <utility>
+#include <iostream>
 
 #include "Node.h"
 //default constructor
@@ -13,18 +14,18 @@ Node::Node(std::string name):
 name_{std::move(name)}
 {}
 
-Node::Node(std::string name, glm::mat4 localTransform):
+Node::Node(std::string name, const glm::mat4& localTransform):
 name_(),
 localTransform_{localTransform}{
 }
 
-Node::Node(std::string name, glm::mat4 localTransform, glm::mat4 worldTransform):
-name_{name}, localTransform_{localTransform}, worldTransform_{worldTransform}{}
+Node::Node(std::string name, const glm::mat4& localTransform, const glm::mat4& worldTransform):
+name_{std::move(name)}, localTransform_{localTransform}, worldTransform_{worldTransform}{}
 
-Node::Node(std::string name, glm::mat4 localTransform, glm::mat4 worldTransform, int depth):
-name_{name}, localTransform_{localTransform}, worldTransform_{worldTransform}{}
-Node::Node(std::string name, glm::mat4 localTransform, glm::mat4 worldTransform, std::shared_ptr<Node> parent):
-        parent_{parent}, name_{name}, localTransform_{localTransform}, worldTransform_{worldTransform}{
+Node::Node(std::string name, const glm::mat4& localTransform, const glm::mat4& worldTransform, int depth):
+name_{std::move(name)}, localTransform_{localTransform}, worldTransform_{worldTransform}{}
+Node::Node(std::string name, const glm::mat4& localTransform, const glm::mat4& worldTransform, std::shared_ptr<Node> parent):
+        parent_{std::move(parent)}, name_{std::move(name)}, localTransform_{localTransform}, worldTransform_{worldTransform}{
 
 }
 
@@ -64,19 +65,22 @@ std::vector<std::shared_ptr<Node>> Node::getChildrenList() const {
 std::string Node::getName() const {
     return name_;
 }
-//TODO Test
-//is the get path also setting the path?
+
+//get all paths from one node
 std::string Node::getPath() const {
+
     std::string temp_path;
     temp_path = this->getName();
     for (auto const& i : this->getChildrenList()) {
         i->getPath();
-        temp_path += "  ->  " + i->getName();
+        temp_path += "  --->  " + i->getName();
     }
+    //std::cout << "getting path of node: " << std::endl;
     return temp_path;
 }
-//Todo test
+//size of path
 int Node::getDepth() const {
+
     int depth = 1;
     for (auto const& i : this->getChildrenList()) {
         if ( !i->getChildrenList().empty()){
@@ -88,6 +92,7 @@ int Node::getDepth() const {
             }
         }
     }
+    std::cout << "getting depth of path of a node: " << std::endl;
     return depth;
 }
 //getter

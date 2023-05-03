@@ -11,11 +11,11 @@ public:
     Node();
     virtual ~Node();
     Node(std::string name);
-    Node(std::string name, glm::mat4 localTransform);
-    Node(std::string name, glm::mat4 localTransform, glm::mat4 worldTransform);
-    Node(std::string name, glm::mat4 localTransform, glm::mat4 worldTransform, std::shared_ptr<Node> parent);
+    Node(std::string name, const glm::mat4& localTransform);
+    Node(std::string name, const glm::mat4& localTransform, const glm::mat4& worldTransform);
+    Node(std::string name, const glm::mat4& localTransform, const glm::mat4& worldTransform, std::shared_ptr<Node> parent);
     Node(std::string name, const glm::mat4& localTransform, std::shared_ptr<Node> parent);
-    Node(std::string name, glm::mat4 localTransform, glm::mat4 worldTransform, int depth);
+    Node(std::string name, const glm::mat4& localTransform, const glm::mat4& worldTransform, int depth);
 
     std::shared_ptr<Node> getParent() const;
     void setParent(std::shared_ptr<Node> new_node);

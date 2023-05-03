@@ -160,13 +160,15 @@ void ApplicationSolar::resizeCallback(unsigned width, unsigned height) {
 
 //function to connect scenegraph to application
 void ApplicationSolar::initializeSceneGraph() {
-//TODO implement initializeScenegraph function
 //root node
-Node root{"Root",glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f})};
+    Node root{"Root",glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f})};
 //Point Light
-PointLightNode pointLightNode;
+    PointLightNode pointLightNode;
+    GeometryNode sunGeometry; //TODO
+    root.addChild(std::make_shared<Node>(pointLightNode));
 //Camera
-CameraNode cameraNode{};
+    CameraNode cameraNode{};
+    root.addChild(std::make_shared<Node>(cameraNode));
 
 //Mercury
     Node mercuryNode("Mercury" ,glm::translate({},glm::vec3{5.79f,0.0f,0.0f}),  std::make_shared<Node>(root));
@@ -225,6 +227,8 @@ CameraNode cameraNode{};
 
 SceneGraph sceneGraph{"SceneGraph",root};
 sceneGraph.printGraph();
+std::cout << root.getPath() << std::endl;
+std::cout << root.getDepth() << std::endl;
 }
 
 
