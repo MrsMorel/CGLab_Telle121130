@@ -4,6 +4,8 @@
 
 class solar_System : public ApplicationSolar {
   public:
+    ApplicationSolar();
+    ~ApplicationSolar();
     //create sun and other planets, including name, position and size
     void init(); 
     //update is based on the orientation and position
