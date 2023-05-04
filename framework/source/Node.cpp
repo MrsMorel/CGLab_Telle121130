@@ -123,6 +123,7 @@ void Node::addChild(const std::shared_ptr<Node>& node) {
 Node Node::removeChild(const std::string& name) {
     Node temp;
     Node temp2;
+    //find child, erase child recursively!
     for (auto const& i : children_) {
         if (i->getName() == name){
             temp = *i;
@@ -130,7 +131,7 @@ Node Node::removeChild(const std::string& name) {
         getChildren(name);
         temp2 = temp;
     }
-    return temp2;
+    return temp2; //remove from tree
 }
 
 Node::Node(std::string name, const glm::mat4& localTransform, std::shared_ptr<Node> parent):
