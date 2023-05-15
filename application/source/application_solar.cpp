@@ -24,16 +24,22 @@ ApplicationSolar::ApplicationSolar(std::string const& resource_path)
  :Application{resource_path}
  ,sceneGraph_{}
  ,planet_object{}
+ ,star{}
  ,m_view_transform{glm::translate(glm::fmat4{}, glm::fvec3{0.0f, 0.0f, 4.0f})}, m_view_projection{utils::calculate_projection_matrix(initial_aspect_ratio)}
 {
   initializeSceneGraph();
   initializeGeometry();
   initializeShaderPrograms();
+  generateStars();
 }
 
 ApplicationSolar::~ApplicationSolar() {
   glDeleteBuffers(1, &planet_object.vertex_BO);
   glDeleteBuffers(1, &planet_object.element_BO);
+  //delete buffers for stars
+  glDeleteBuffers(1, &star.vertex_BO);
+  glDeleteBuffers(1, &star.element_BO);
+  glDeleteVertexArrays(1, &star.vertex_AO);
   glDeleteVertexArrays(1, &planet_object.vertex_AO);
 }
 
@@ -140,6 +146,12 @@ void ApplicationSolar::initializeShaderPrograms() {
   m_shaders.at("planet").u_locs["ModelMatrix"] = -1;
   m_shaders.at("planet").u_locs["ViewMatrix"] = -1;
   m_shaders.at("planet").u_locs["ProjectionMatrix"] = -1;
+
+  //shaders for stars
+  m_shaders.emplace("star", shader_program{{{GL_VERTEX_SHADER, m_resource_path + "shaders/vao.vert"},
+            {GL_FRAGMENT_SHADER, m_resource_path + "shaders/vao.frag"}}});
+  m_shaders.at("star").u_locs["ModelViewMatrix"] = -1;
+  m_shaders.at("star").u_locs["ProjectionMatrix"] = -1;
 }
 
 // load models
@@ -178,6 +190,148 @@ void ApplicationSolar::initializeGeometry() {
   planet_object.draw_mode = GL_TRIANGLES;
   // transfer number of indices to model object 
   planet_object.num_elements = GLsizei(planet_model.indices.size());
+}
+/*
+struct Star
+{
+    GLfloat x, y, z; // Star position
+    GLfloat r, g, b; // Star color
+};*/
+
+
+
+void ApplicationSolar::generateStars()
+{
+    std::vector<GLfloat> stars;
+    unsigned int maxDistance = 1000;
+    unsigned int numStars = 100;
+    float middle_value = 500.0f;
+    for (unsigned int i = 0; i < numStars; i++)
+    {
+        //position
+        GLfloat x_pos = (static_cast<float>(std::rand() % maxDistance)) - middle_value;
+        GLfloat y_pos = (static_cast<float>(std::rand() % maxDistance)) - middle_value;
+        GLfloat z_pos = (static_cast<float>(std::rand() % maxDistance)) - middle_value;
+        stars.push_back(x_pos);
+        stars.push_back(y_pos);
+        stars.push_back(z_pos);
+       // star.z = -1.0f;  // Because it's on 2D, so we sey the position of z as -1.0f
+        //colours
+
+        GLfloat r_colour = static_cast<GLfloat>(std::rand() % 255) / 255.0f;  // Generate a random red component between 0.0 and 255.0
+        GLfloat g_colour = static_cast<GLfloat>(std::rand() % 255) / 255.0f; // Generate a random green component between 0.0 and 1.0
+        GLfloat b_colour = static_cast<GLfloat>(std::rand() % 255) / 255.0f; // Generate a random blue component between 0.0 and 1.0
+        stars.push_back(r_colour);
+        stars.push_back(g_colour);
+        stars.push_back(b_colour);
+
+
+        // Debug output
+        std::cout << "Generated star " << i + 1 << ":"
+                  << " Position=(" << x_pos << ", " << y_pos << ", " << z_pos << ")"
+                  << " Color=(" << r_colour << ", " << g_colour << ", " << b_colour << ")"
+                  << std::endl;
+
+    }
+    //creating vertex array
+    glGenVertexArrays(GLint(1), &star.vertex_AO);
+    glBindVertexArray(star.vertex_AO);
+
+    //creating buffer and loading data
+    glGenBuffers(GLuint(1), &star.vertex_BO);
+    glBindBuffer(GL_ARRAY_BUFFER, star.vertex_BO);
+    glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(sizeof(float) * stars.size()), stars.data(), GL_STATIC_DRAW);
+
+    //position array
+    glEnableVertexArrayAttrib(star.vertex_AO, 0);
+    glVertexAttribPointer(GLuint(0), GLuint(3), GL_FLOAT, GL_FALSE, GLsizei(sizeof(float)*6), nullptr);
+
+    //colour array
+    glEnableVertexArrayAttrib(star.vertex_AO, 1);
+    //TODO not sure if numbers are right
+    glVertexAttribPointer(GLuint(1),GLuint(3),GL_FLOAT, GL_FALSE, GLsizei(sizeof(float)*6) , (void*)(sizeof(float)*3));
+
+    //drawing mit draw_mode points
+    star.draw_mode = GL_POINTS;
+    star.num_elements = GLsizei(numStars);
+}
+
+GLuint createShaderProgram()
+{
+    // Create vertex shader
+    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    // Vertex shader source
+    const char* vertexShaderSource = R"(
+    #version 330 core
+    layout (location = 0) in vec3 position;
+    layout (location = 1) in vec3 color;
+    out vec3 starColor;
+    void main()
+    {
+        gl_Position = vec4(position, 1.0);
+        starColor = color;
+    }
+)";
+
+    glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr); // Specify the source code for the vertex shader
+    glCompileShader(vertexShader); // Compile vertex shader objects
+    // Check if the vertex shader compiles successfully
+    GLint success;
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+    if (!success)
+    {
+        GLchar infoLog[512];
+        glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
+        std::cerr << "Failed to compile vertex shader:\n" << infoLog << std::endl;
+        return 0;
+    }
+
+    // Create fragment shader
+    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    // Fragment shader source
+    const char* fragmentShaderSource = R"(
+    #version 150
+    in vec3 starColor;
+    out vec4 fragColor;
+    void main()
+    {
+        fragColor = vec4(starColor, 1.0);
+    }
+)";
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr); // Specify the source code for the fragment shader
+    glCompileShader(fragmentShader); // Compile fragment shader objects
+    //  Check if the fragment shader compiles successfully
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+    if (!success)
+    {
+        GLchar infoLog[512];
+        glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
+        std::cerr << "Failed to compile fragment shader:\n" << infoLog << std::endl;
+        return 0;
+    }
+
+    // Create shader program
+    GLuint shaderProgram = glCreateProgram();
+    // Attach vertex shader and fragment shader to shader program
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    // Link shader program
+    glLinkProgram(shaderProgram);
+    // Check if the shader program is linked successfully
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    if (!success)
+    {
+        GLchar infoLog[512];
+        glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
+        std::cerr << "Failed to link shader program:\n" << infoLog << std::endl;
+        return 0;
+    }
+
+    // Delete vertex shader and fragment shader
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    return shaderProgram;
 }
 
 ///////////////////////////// callback functions for window events ////////////

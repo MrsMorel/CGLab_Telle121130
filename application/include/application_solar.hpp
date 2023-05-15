@@ -30,6 +30,7 @@ class ApplicationSolar : public Application {
   // public scenegraph for initializing
   SceneGraph sceneGraph_;
 
+
  protected:
   void initializeShaderPrograms();
   void initializeGeometry();
@@ -40,10 +41,12 @@ class ApplicationSolar : public Application {
   void uploadProjection();
   // upload view matrix
   void uploadView();
+  //making stars at random position
+  void generateStars();
 
   // cpu representation of model
   model_object planet_object;
-  
+  model_object star;
   // camera transform matrix
   glm::fmat4 m_view_transform;
   // camera projection matrix
