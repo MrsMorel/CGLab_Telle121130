@@ -1,16 +1,19 @@
 #include "CameraNode.h"
 
 CameraNode::CameraNode():
-        Node(){}
+        Node(),
+        projectionMatrix{}{}
 
 CameraNode::~CameraNode() = default;
 
 bool CameraNode::getPerspective()
 {
+    return isPerspective;
 }
 
 bool CameraNode::getEnabled()
 {
+    return isEnabled;
 }
 
 void CameraNode::setEnabled(bool isEnabled)
@@ -20,6 +23,7 @@ void CameraNode::setEnabled(bool isEnabled)
 
 glm::mat4 CameraNode::getProjectionMatrix()
 {
+    return projectionMatrix;
 }
 
 void CameraNode::setProjectionMatrix(glm::mat4 projectionMatrix)
