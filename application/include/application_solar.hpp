@@ -29,7 +29,7 @@ class ApplicationSolar : public Application {
   void render() const;
   // public scenegraph for initializing
   SceneGraph sceneGraph_;
-
+  void renderStars() const;
 
  protected:
   void initializeShaderPrograms();
@@ -43,6 +43,7 @@ class ApplicationSolar : public Application {
   void uploadView();
   //making stars at random position
   void generateStars();
+
 
   // cpu representation of model
   model_object planet_object;

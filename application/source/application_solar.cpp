@@ -43,74 +43,7 @@ ApplicationSolar::~ApplicationSolar() {
   glDeleteVertexArrays(1, &planet_object.vertex_AO);
 }
 
-void ApplicationSolar::render() const {
-    //TODO Render Planets correctly
-    //making new list for only planets
-    std::vector<std::shared_ptr<Node>> planets;
-    // pushing planet nodes into new list
-    planets.push_back(sceneGraph_.getRoot().getChildren("Mercury"));
-    planets.push_back(sceneGraph_.getRoot().getChildren("Venus"));
-    planets.push_back(sceneGraph_.getRoot().getChildren("Mercury"));
-    planets.push_back(sceneGraph_.getRoot().getChildren("Earth"));
-    planets.push_back(sceneGraph_.getRoot().getChildren("Moon"));
-    planets.push_back(sceneGraph_.getRoot().getChildren("Mars"));
-    planets.push_back(sceneGraph_.getRoot().getChildren("Jupiter"));
-    planets.push_back(sceneGraph_.getRoot().getChildren("Saturn"));
-    planets.push_back(sceneGraph_.getRoot().getChildren("Uranus"));
-    planets.push_back(sceneGraph_.getRoot().getChildren("Neptun"));
 
-    for ( const std::shared_ptr<Node>& i : planets) {
-
-        glm::mat4 matrix_render; //solution after rotation
-        // bind shader to upload uniforms
-        glUseProgram(m_shaders.at("planet").handle);
-
-        if (i->getName() != "Moon"){ //all the planets (moon is not a planet)
-            std::shared_ptr<Node> planetGeo = i->getChildren(i->getName()+"G"); //getting geometry of planet
-            //rotate identity matrix
-
-            glm::mat4 matrix_rotation = glm::rotate(glm::fmat4{}, float(glfwGetTime()) , glm::vec3{0.0f,1.0f,0.0f}); //float cast or else function doesn't work
-            i->setLocalTransform(matrix_rotation * i->getWorldTransform());
-            matrix_render = glm::rotate(i->getLocalTransform(),float(glfwGetTime()), glm::vec3{0.0f,1.0f,0.0f}); //matrix for rendering with computed local transformation matrix
-            //TODO update the parent transform
-            //TODO do nt get the parent new world transform
-        } else { //Moon render
-            std::shared_ptr<Node> moonGeo = i->getChildren("MoonG"); //getting geometry
-            glm::mat4 matrix_rotation = glm::rotate(glm::fmat4{}, float(glfwGetTime()), glm::vec3{0.0f,1.0f,0.0f}); //float cast or else function doesn't work
-            i->setLocalTransform(matrix_rotation * i->getWorldTransform());
-            //i->setLocalTransform( matrix_rotation * moonGeo->getLocalTransform()); //multiplying rotation matrix with moon geometry local transform for translating
-            matrix_render = glm::rotate(i->getLocalTransform(),float(glfwGetTime()), glm::vec3{0.0f,1.0f,0.0f}); //matrix for rendering with computed local transformation matrix
-        }
-        //uniformmatrix with matrix_render solution
-        glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ModelMatrix"),
-                           1, GL_FALSE, glm::value_ptr(matrix_render));
-        //bind the VAO to draw
-        glBindVertexArray(planet_object.vertex_AO);
-        //draw bound vertex array using bound shader
-        glDrawElements(planet_object.draw_mode, planet_object.num_elements, model::INDEX.type, NULL);
-
-    }
-    // bind shader to upload uniforms
-    glUseProgram(m_shaders.at("planet").handle);
-    glm::fmat4 model_matrix = glm::rotate(glm::fmat4{}, float(glfwGetTime()), glm::fvec3{0.0f, 0.0f, 1.0f});
-    model_matrix = glm::translate(model_matrix, glm::fvec3{0.0f, 0.0f, -1.0f});
-
-    glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ModelMatrix"),
-                       1, GL_FALSE, glm::value_ptr(model_matrix));
-    // extra matrix for normal transformation to keep them orthogonal to surface
-    glm::fmat4 normal_matrix = glm::inverseTranspose(glm::inverse(m_view_transform) * model_matrix);
-    glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("NormalMatrix"),
-                       1, GL_FALSE, glm::value_ptr(normal_matrix));
-    // bind the VAO to draw
-    glBindVertexArray(planet_object.vertex_AO);
-
-    // draw bound vertex array using bound shader
-    glDrawElements(planet_object.draw_mode, planet_object.num_elements, model::INDEX.type, NULL);
-
-
-
-
-}
 
 void ApplicationSolar::uploadView() {
   // vertices are transformed in camera space, so camera transform must be inverted
@@ -476,6 +409,84 @@ void ApplicationSolar::initializeSceneGraph() {
     //sceneGraph_.printGraph();
 //std::cout << root.getPath() << std::endl;
 //std::cout << root.getDepth() << std::endl;
+}
+
+void ApplicationSolar::renderStars() const {
+    //use shaders
+    glUseProgram(m_shaders.at("star").handle);
+    //bind vertex array
+    glBindVertexArray(star.vertex_AO);
+    //draw array of stars
+    glDrawArrays(star.draw_mode,GLint(0),star.num_elements);
+}
+void ApplicationSolar::render() const {
+    renderStars();
+    //TODO Render Planets correctly
+    //making new list for only planets
+    std::vector<std::shared_ptr<Node>> planets;
+    // pushing planet nodes into new list
+    planets.push_back(sceneGraph_.getRoot().getChildren("Mercury"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("Venus"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("Mercury"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("Earth"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("Moon"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("Mars"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("Jupiter"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("Saturn"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("Uranus"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("Neptun"));
+
+    for ( const std::shared_ptr<Node>& i : planets) {
+
+        glm::mat4 matrix_render; //solution after rotation
+        // bind shader to upload uniforms
+        glUseProgram(m_shaders.at("planet").handle);
+
+        if (i->getName() != "Moon"){ //all the planets (moon is not a planet)
+            std::shared_ptr<Node> planetGeo = i->getChildren(i->getName()+"G"); //getting geometry of planet
+            //rotate identity matrix
+
+            glm::mat4 matrix_rotation = glm::rotate(glm::fmat4{}, float(glfwGetTime()) , glm::vec3{0.0f,1.0f,0.0f}); //float cast or else function doesn't work
+            i->setLocalTransform(matrix_rotation * i->getWorldTransform());
+            matrix_render = glm::rotate(i->getLocalTransform(),float(glfwGetTime()), glm::vec3{0.0f,1.0f,0.0f}); //matrix for rendering with computed local transformation matrix
+            //TODO update the parent transform
+            //TODO do nt get the parent new world transform
+        } else { //Moon render
+            std::shared_ptr<Node> moonGeo = i->getChildren("MoonG"); //getting geometry
+            glm::mat4 matrix_rotation = glm::rotate(glm::fmat4{}, float(glfwGetTime()), glm::vec3{0.0f,1.0f,0.0f}); //float cast or else function doesn't work
+            i->setLocalTransform(matrix_rotation * i->getWorldTransform());
+            //i->setLocalTransform( matrix_rotation * moonGeo->getLocalTransform()); //multiplying rotation matrix with moon geometry local transform for translating
+            matrix_render = glm::rotate(i->getLocalTransform(),float(glfwGetTime()), glm::vec3{0.0f,1.0f,0.0f}); //matrix for rendering with computed local transformation matrix
+        }
+        //uniformmatrix with matrix_render solution
+        glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ModelMatrix"),
+                           1, GL_FALSE, glm::value_ptr(matrix_render));
+        //bind the VAO to draw
+        glBindVertexArray(planet_object.vertex_AO);
+        //draw bound vertex array using bound shader
+        glDrawElements(planet_object.draw_mode, planet_object.num_elements, model::INDEX.type, NULL);
+
+    }
+    // bind shader to upload uniforms
+    glUseProgram(m_shaders.at("planet").handle);
+    glm::fmat4 model_matrix = glm::rotate(glm::fmat4{}, float(glfwGetTime()), glm::fvec3{0.0f, 0.0f, 1.0f});
+    model_matrix = glm::translate(model_matrix, glm::fvec3{0.0f, 0.0f, -1.0f});
+
+    glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ModelMatrix"),
+                       1, GL_FALSE, glm::value_ptr(model_matrix));
+    // extra matrix for normal transformation to keep them orthogonal to surface
+    glm::fmat4 normal_matrix = glm::inverseTranspose(glm::inverse(m_view_transform) * model_matrix);
+    glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("NormalMatrix"),
+                       1, GL_FALSE, glm::value_ptr(normal_matrix));
+    // bind the VAO to draw
+    glBindVertexArray(planet_object.vertex_AO);
+
+    // draw bound vertex array using bound shader
+    glDrawElements(planet_object.draw_mode, planet_object.num_elements, model::INDEX.type, NULL);
+
+
+
+
 }
 
 
