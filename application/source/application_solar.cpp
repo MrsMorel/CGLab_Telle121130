@@ -89,17 +89,17 @@ void ApplicationSolar::generateStars()
     //maximal distance that stars may have
     unsigned int distance = 1000;
     //number of stars
-    unsigned int numStars = 1000000;
+    unsigned int numStars = 9000000;
     //for scattering
-    float middle_value = 500.0f;
+    float middle_value = 100.0f;
 
     //for each star define attributes
     for (unsigned int i = 0; i < numStars; i++)
     {
         // x, y, z position of one star
-        GLfloat x_pos = (static_cast<float>(std::rand() % distance)) - middle_value;
-        GLfloat y_pos = (static_cast<float>(std::rand() % distance)) - middle_value;
-        GLfloat z_pos = (static_cast<float>(std::rand() % distance)) - middle_value;
+        GLfloat x_pos = (static_cast<float>(static_cast<unsigned int>(std::rand()) % distance)) - middle_value;
+        GLfloat y_pos = (static_cast<float>(static_cast<unsigned int>(std::rand()) % distance)) - middle_value;
+        GLfloat z_pos = (static_cast<float>(static_cast<unsigned int>(std::rand()) % distance)) - middle_value;
         stars.push_back(x_pos); //adding to vector
         stars.push_back(y_pos);
         stars.push_back(z_pos);
@@ -127,8 +127,8 @@ void ApplicationSolar::generateStars()
 
     //creating buffer and loading data
     glGenBuffers(1, &star_model.vertex_BO); //generic buffer
-    glBindBuffer(GL_ARRAY_BUFFER, star_model.vertex_BO);
-    glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(stars.size()), stars.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, star_model.vertex_BO); //binding generic buffer
+    glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(stars.size()), stars.data(), GL_STATIC_DRAW); //configure bound array buffer
 
     //position array
     glEnableVertexArrayAttrib(star_model.vertex_AO, 0);
@@ -419,9 +419,10 @@ void ApplicationSolar::renderPlanets() const {
 void ApplicationSolar::renderStars() const {
     //use shaders
     glUseProgram(m_shaders.at("star").handle);
-    //bind vertex array
+    //bind vertex array (vao)
     glBindVertexArray(star_model.vertex_AO);
     //draw array of stars
+    //std::cout << star_model.num_elements;
     glDrawArrays(star_model.draw_mode,GLint(0),star_model.num_elements);
 
 }
