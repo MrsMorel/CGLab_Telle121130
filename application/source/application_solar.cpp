@@ -29,7 +29,7 @@ ApplicationSolar::ApplicationSolar(std::string const& resource_path)
 {
   initializeSceneGraph();
   initializeGeometry();
-  generateStars();
+  generateStars(); //Assignment 2
   initializeShaderPrograms();
 
 }
@@ -37,15 +37,16 @@ ApplicationSolar::ApplicationSolar(std::string const& resource_path)
 ApplicationSolar::~ApplicationSolar() {
   glDeleteBuffers(1, &planet_object.vertex_BO);
   glDeleteBuffers(1, &planet_object.element_BO);
-  //delete buffers for stars
+  glDeleteVertexArrays(1, &planet_object.vertex_AO);
+  // //Assignment 2: delete buffers for stars
   glDeleteBuffers(1, &star_model.vertex_BO);
   glDeleteBuffers(1, &star_model.element_BO);
   glDeleteVertexArrays(1, &star_model.vertex_AO);
-  glDeleteVertexArrays(1, &planet_object.vertex_AO);
+
 }
 
 
-
+///////////////////////////////// UPLOAD FUNCTIONS ///////////////////////////
 void ApplicationSolar::uploadView() {
   // vertices are transformed in camera space, so camera transform must be inverted
   glm::fmat4 view_matrix = glm::inverse(m_view_transform);
@@ -81,6 +82,68 @@ void ApplicationSolar::uploadUniforms() {
   uploadProjection();
 }
 
+/////////////////// Assignment 2 //
+void ApplicationSolar::generateStars()
+{
+    //vector for saving stars in float
+    std::vector<GLfloat> stars;
+    //maximal distance that stars may have
+    int distance = 1000;
+    //number of stars
+    int numStars = 10;
+    //for scattering
+    float middle_value = 500.0f;
+
+    //for each star define attributes
+    for (int i = 0; i < numStars; i++)
+    {
+        // x, y, z position of one star
+        GLfloat x_pos = (static_cast<float>(std::rand() % distance)) - middle_value;
+        GLfloat y_pos = (static_cast<float>(std::rand() % distance)) - middle_value;
+        GLfloat z_pos = (static_cast<float>(std::rand() % distance)) - middle_value;
+        stars.push_back(x_pos); //adding to vector
+        stars.push_back(y_pos);
+        stars.push_back(z_pos);
+
+        //colours
+        GLfloat r_colour = ((float)rand() / (float)RAND_MAX) / 2.0 + 0.1 ;  // Generate a random red component between 0.0 and 255.0
+        GLfloat g_colour = ((float)rand() / (float)RAND_MAX) / 2.0 + 0.1 ; // Generate a random green component between 0.0 and 255.0
+        GLfloat b_colour = ((float)rand() / (float)RAND_MAX) / 2.0 + 0.1 ; // Generate a random blue component between 0.0 and 255.0
+        stars.push_back(r_colour);
+        stars.push_back(g_colour);
+        stars.push_back(b_colour);
+
+
+        // Debug output
+       /* std::cout << "Generated star " << i + 1 << ":"
+                  << " Position=(" << x_pos << ", " << y_pos << ", " << z_pos << ")"
+                  << " Color=(" << r_colour << ", " << g_colour << ", " << b_colour << ")"
+                  << std::endl;*/
+
+    }
+    //creating vertex array
+    glGenVertexArrays(1, &star_model.vertex_AO);
+    //bind vertex array to attach buffers
+    glBindVertexArray(star_model.vertex_AO);
+
+    //creating buffer and loading data
+    glGenBuffers(1, &star_model.vertex_BO); //generic buffer
+    glBindBuffer(GL_ARRAY_BUFFER, star_model.vertex_BO);
+    glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(stars.size()), stars.data(), GL_STATIC_DRAW);
+
+    //position array
+    glEnableVertexArrayAttrib(star_model.vertex_AO, 0);
+    glVertexAttribPointer(GLuint(0), GLuint(3), GL_FLOAT, GL_FALSE, GLsizei(sizeof(float)*6), NULL);
+
+    //colour array
+    glEnableVertexArrayAttrib(star_model.vertex_AO, 1);
+    //TODO not sure if numbers are right
+    glVertexAttribPointer(GLuint(1),GLuint(3),GL_FLOAT, GL_FALSE, GLsizei(sizeof(float)*6) , (void*)(sizeof(float)*3));
+
+    //drawing mit draw_mode points
+    star_model.draw_mode = GL_POINTS;
+    star_model.num_elements = GLsizei(numStars);
+}
 ///////////////////////////// intialisation functions /////////////////////////
 // load shader sources
 void ApplicationSolar::initializeShaderPrograms() {
@@ -146,138 +209,8 @@ struct Star
 
 
 
-void ApplicationSolar::generateStars()
-{
-    std::vector<GLfloat> stars;
-    unsigned int distance = 1000;
-    unsigned int numStars = 100000;
-    float middle_value = 250.0f;
-    for (unsigned int i = 0; i < numStars; i++)
-    {
-        //position
-        GLfloat x_pos = (static_cast<float>(std::rand() % distance)) - middle_value;
-        GLfloat y_pos = (static_cast<float>(std::rand() % distance)) - middle_value;
-        GLfloat z_pos = (static_cast<float>(std::rand() % distance)) - middle_value;
-        stars.push_back(x_pos);
-        stars.push_back(y_pos);
-        stars.push_back(z_pos);
-        //colours
-
-        GLfloat r_colour = static_cast<GLfloat>(std::rand() % 255) / 255.0f;  // Generate a random red component between 0.0 and 255.0
-        GLfloat g_colour = static_cast<GLfloat>(std::rand() % 255) / 255.0f; // Generate a random green component between 0.0 and 1.0
-        GLfloat b_colour = static_cast<GLfloat>(std::rand() % 255) / 255.0f; // Generate a random blue component between 0.0 and 1.0
-        stars.push_back(r_colour);
-        stars.push_back(g_colour);
-        stars.push_back(b_colour);
 
 
-        // Debug output
-        /*std::cout << "Generated star " << i + 1 << ":"
-                  << " Position=(" << x_pos << ", " << y_pos << ", " << z_pos << ")"
-                  << " Color=(" << r_colour << ", " << g_colour << ", " << b_colour << ")"
-                  << std::endl;*/
-
-    }
-    //creating vertex array
-    glGenVertexArrays(GLint(1), &star_model.vertex_AO);
-    glBindVertexArray(star_model.vertex_AO); //bind vertex array
-
-    //creating buffer and loading data
-    glGenBuffers(GLuint(1), &star_model.vertex_BO);
-    glBindBuffer(GL_ARRAY_BUFFER, star_model.vertex_BO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * stars.size(), stars.data(), GL_STATIC_DRAW);
-
-    //position array
-    glEnableVertexArrayAttrib(star_model.vertex_AO, 0);
-    glVertexAttribPointer(GLuint(0), GLuint(3), GL_FLOAT, GL_FALSE, GLsizei(sizeof(float)*6), NULL);
-
-    //colour array
-    glEnableVertexArrayAttrib(star_model.vertex_AO, 1);
-    //TODO not sure if numbers are right
-    glVertexAttribPointer(GLuint(1),GLuint(3),GL_FLOAT, GL_FALSE, GLsizei(sizeof(float)*6) , (void*)(sizeof(float)*3));
-
-    //drawing mit draw_mode points
-    star_model.draw_mode = GL_POINTS;
-    star_model.num_elements = GLsizei(numStars);
-}
-/*
-GLuint createShaderProgram()
-{
-    // Create vertex shader
-    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    // Vertex shader source
-    const char* vertexShaderSource = R"(
-    #version 330 core
-    layout (location = 0) in vec3 position;
-    layout (location = 1) in vec3 color;
-    out vec3 starColor;
-    void main()
-    {
-        gl_Position = vec4(position, 1.0);
-        starColor = color;
-    }
-)";
-
-    glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr); // Specify the source code for the vertex shader
-    glCompileShader(vertexShader); // Compile vertex shader objects
-    // Check if the vertex shader compiles successfully
-    GLint success;
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        GLchar infoLog[512];
-        glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
-        std::cerr << "Failed to compile vertex shader:\n" << infoLog << std::endl;
-        return 0;
-    }
-
-    // Create fragment shader
-    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    // Fragment shader source
-    const char* fragmentShaderSource = R"(
-    #version 150
-    in vec3 starColor;
-    out vec4 fragColor;
-    void main()
-    {
-        fragColor = vec4(starColor, 1.0);
-    }
-)";
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr); // Specify the source code for the fragment shader
-    glCompileShader(fragmentShader); // Compile fragment shader objects
-    //  Check if the fragment shader compiles successfully
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        GLchar infoLog[512];
-        glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
-        std::cerr << "Failed to compile fragment shader:\n" << infoLog << std::endl;
-        return 0;
-    }
-
-    // Create shader program
-    GLuint shaderProgram = glCreateProgram();
-    // Attach vertex shader and fragment shader to shader program
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    // Link shader program
-    glLinkProgram(shaderProgram);
-    // Check if the shader program is linked successfully
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if (!success)
-    {
-        GLchar infoLog[512];
-        glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
-        std::cerr << "Failed to link shader program:\n" << infoLog << std::endl;
-        return 0;
-    }
-
-    // Delete vertex shader and fragment shader
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    return shaderProgram;
-}*/
 
 ///////////////////////////// callback functions for window events ////////////
 // handle key input
