@@ -30,6 +30,7 @@ class ApplicationSolar : public Application {
   // public scenegraph for initializing
   SceneGraph sceneGraph_;
   void renderStars() const;
+  void renderPlanets() const;
 
  protected:
   void initializeShaderPrograms();
@@ -47,7 +48,7 @@ class ApplicationSolar : public Application {
 
   // cpu representation of model
   model_object planet_object;
-  model_object star;
+  model_object star_model;
   // camera transform matrix
   glm::fmat4 m_view_transform;
   // camera projection matrix
