@@ -131,7 +131,7 @@ Node Node::removeChild(const std::string& name) {
         getChildren(name);
         temp2 = temp;
     }
-    return temp2; //remove from tree
+    return temp2; //TODO remove from tree
 }
 
 Node::Node(std::string name, const glm::mat4& localTransform, std::shared_ptr<Node> parent):

@@ -51,6 +51,7 @@ void ApplicationSolar::uploadView() {
   // vertices are transformed in camera space, so camera transform must be inverted
   glm::fmat4 view_matrix = glm::inverse(m_view_transform);
   // upload matrix to gpu
+  //Assignment 2
   glUseProgram(m_shaders.at("star").handle);
   glUniformMatrix4fv(m_shaders.at("star").u_locs.at("ModelViewMatrix"),
                        1, GL_FALSE, glm::value_ptr(view_matrix));
@@ -75,8 +76,6 @@ void ApplicationSolar::uploadProjection() {
 
 // update uniform locations
 void ApplicationSolar::uploadUniforms() { 
-
-
     // upload uniform values to new locations
   uploadView();
   uploadProjection();
@@ -88,14 +87,14 @@ void ApplicationSolar::generateStars()
     //vector for saving stars in float
     std::vector<GLfloat> stars;
     //maximal distance that stars may have
-    int distance = 1000;
+    unsigned int distance = 1000;
     //number of stars
-    int numStars = 10;
+    unsigned int numStars = 1000000;
     //for scattering
     float middle_value = 500.0f;
 
     //for each star define attributes
-    for (int i = 0; i < numStars; i++)
+    for (unsigned int i = 0; i < numStars; i++)
     {
         // x, y, z position of one star
         GLfloat x_pos = (static_cast<float>(std::rand() % distance)) - middle_value;
@@ -106,9 +105,9 @@ void ApplicationSolar::generateStars()
         stars.push_back(z_pos);
 
         //colours
-        GLfloat r_colour = ((float)rand() / (float)RAND_MAX) / 2.0 + 0.1 ;  // Generate a random red component between 0.0 and 255.0
-        GLfloat g_colour = ((float)rand() / (float)RAND_MAX) / 2.0 + 0.1 ; // Generate a random green component between 0.0 and 255.0
-        GLfloat b_colour = ((float)rand() / (float)RAND_MAX) / 2.0 + 0.1 ; // Generate a random blue component between 0.0 and 255.0
+        GLfloat r_colour = static_cast<float>(std::rand() % 255)/255;  // Generate a random red component between 0.0 and 255.0
+        GLfloat g_colour = static_cast<float>(std::rand() % 255)/255; // Generate a random green component between 0.0 and 255.0
+        GLfloat b_colour = static_cast<float>(std::rand() % 255)/255; // Generate a random blue component between 0.0 and 255.0
         stars.push_back(r_colour);
         stars.push_back(g_colour);
         stars.push_back(b_colour);
@@ -133,11 +132,11 @@ void ApplicationSolar::generateStars()
 
     //position array
     glEnableVertexArrayAttrib(star_model.vertex_AO, 0);
-    glVertexAttribPointer(GLuint(0), GLuint(3), GL_FLOAT, GL_FALSE, GLsizei(sizeof(float)*6), NULL);
+    glVertexAttribPointer(GLuint(0), GLuint(3), GL_FLOAT, GL_FALSE, GLsizei(sizeof(float)*6), nullptr);
 
     //colour array
     glEnableVertexArrayAttrib(star_model.vertex_AO, 1);
-    //TODO not sure if numbers are right
+    //
     glVertexAttribPointer(GLuint(1),GLuint(3),GL_FLOAT, GL_FALSE, GLsizei(sizeof(float)*6) , (void*)(sizeof(float)*3));
 
     //drawing mit draw_mode points
@@ -156,6 +155,7 @@ void ApplicationSolar::initializeShaderPrograms() {
   m_shaders.at("planet").u_locs["ViewMatrix"] = -1;
   m_shaders.at("planet").u_locs["ProjectionMatrix"] = -1;
 
+  //Assignment 2:
   //shaders for stars
   m_shaders.emplace("star", shader_program{{{GL_VERTEX_SHADER, m_resource_path + "shaders/vao.vert"},
             {GL_FRAGMENT_SHADER, m_resource_path + "shaders/vao.frag"}}});
@@ -200,16 +200,6 @@ void ApplicationSolar::initializeGeometry() {
   // transfer number of indices to model object 
   planet_object.num_elements = GLsizei(planet_model.indices.size());
 }
-/*
-struct Star
-{
-    GLfloat x, y, z; // Star position
-    GLfloat r, g, b; // Star color
-};*/
-
-
-
-
 
 
 ///////////////////////////// callback functions for window events ////////////
@@ -356,23 +346,12 @@ void ApplicationSolar::initializeSceneGraph() {
 //std::cout << root.getDepth() << std::endl;
 }
 
-void ApplicationSolar::renderStars() const {
-    //use shaders
-    glUseProgram(m_shaders.at("star").handle);
-    //bind vertex array
-    glBindVertexArray(star_model.vertex_AO);
-    //draw array of stars
-    glDrawArrays(star_model.draw_mode,GLint(0),star_model.num_elements);
-}
+
 void ApplicationSolar::render() const {
 
     //TODO Render Planets correctly
     renderPlanets();
     renderStars();
-
-
-
-
 
 }
 
@@ -437,7 +416,15 @@ void ApplicationSolar::renderPlanets() const {
 
 
 }
+void ApplicationSolar::renderStars() const {
+    //use shaders
+    glUseProgram(m_shaders.at("star").handle);
+    //bind vertex array
+    glBindVertexArray(star_model.vertex_AO);
+    //draw array of stars
+    glDrawArrays(star_model.draw_mode,GLint(0),star_model.num_elements);
 
+}
 
 // exe entry point
 int main(int argc, char* argv[]) {

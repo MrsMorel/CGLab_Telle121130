@@ -3,7 +3,7 @@
 #include "../include/GeometryNode.h"
 //default constructor
 GeometryNode::GeometryNode():
-Node(){}
+Node(),geometry_{}{}
 
 GeometryNode::~GeometryNode() = default;
 //getter
