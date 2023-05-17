@@ -81,7 +81,7 @@ void ApplicationSolar::uploadUniforms() {
   uploadProjection();
 }
 
-/////////////////// Assignment 2 //
+/////////////////// Assignment 2 // creating Geometry for Stars
 void ApplicationSolar::generateStars()
 {
     //vector for saving stars in float
@@ -89,9 +89,9 @@ void ApplicationSolar::generateStars()
     //maximal distance that stars may have
     unsigned int distance = 1000;
     //number of stars
-    unsigned int numStars = 9000000;
+    unsigned int numStars = 400000;
     //for scattering
-    float middle_value = 100.0f;
+    float middle_value = 200.0f;
 
     //for each star define attributes
     for (unsigned int i = 0; i < numStars; i++)
