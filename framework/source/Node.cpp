@@ -14,6 +14,23 @@ Node::Node(std::string name):
 name_{std::move(name)}
 {}
 
+/*Assignment 3 Task 1 Extend Node class
+PointLightNode::PointLightNode() {} //constructor
+PointLightNode::~PointLightNode(){} //destructor
+float PointLightNode::getLightIntensity() const {
+    return lightIntensity;
+}
+void PointLightNode::setLightIntensity(float intensity) {
+    lightIntensity = intensity;
+}
+glm::vec3  PointLightNode::getLightColor() const {
+    return lightColor;
+}
+void PointLightNode::setLightColor(const glm::vec3& color) {
+    lightColor = color;
+}
+*/
+
 Node::Node(std::string name, const glm::mat4& localTransform):
 name_(),
 localTransform_{localTransform}{

@@ -41,4 +41,21 @@ private:
     glm::mat4 localTransform_;  //local transformation matrix
     glm::mat4 worldTransform_;  //world transformation matrix
 };
+/* Assignment 3 Task 1 ---Extend Node class
+class PointLightNode : public Node{
+public:
+    PointLightNode();
+    virtual ~PointLightNode();
+
+    float getLightIntensity() const;
+    void setLightIntensity(float intensity);
+    glm::vec3 getLightColor() const;
+    void setLightColor(const glm::vec3& color);
+
+private:
+    float lightIntensity;
+    glm::vec3 lightColor;
+
+};
+*/
 #endif //OPENGL_FRAMEWORK_NODE_H

@@ -404,16 +404,35 @@ void ApplicationSolar::renderPlanets() const {
         glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ModelMatrix"),
                            1, GL_FALSE, glm::value_ptr(matrix_render));
         matrix_render = glm::inverseTranspose(matrix_render);
+
+        //Assignment 3 Task 2
+        //Missing the location of Color...
+        if (i->getName() == "Mercury") {
+            glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 1.0f, 0.5f, 0.0f); // orange
+        } else if (i->getName() == "Venus") {
+            glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.9f, 0.8f, 0.0f); // yellow
+        } else if (i->getName() == "Earth") {
+            glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.0f, 0.5f, 1.0f); // blue
+        } else if (i->getName() == "Moon") {
+            glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.7f, 0.7f, 0.7f); // gray
+        } else if (i->getName() == "Mars") {
+            glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 1.0f, 0.0f, 0.0f); // red
+        } else if (i->getName() == "Jupiter") {
+            glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.7f, 0.3f, 0.1f); // brown
+        } else if (i->getName() == "Saturn") {
+            glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.8f, 0.8f, 0.6f); // light yellow
+        } else if (i->getName() == "Uranus") {
+            glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.5f, 0.8f, 1.0f); // light blue
+        } else if (i->getName() == "Neptun") {
+            glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.0f, 0.0f, 0.8f); // dark blue
+        }
+
         //bind the VAO to draw
         glBindVertexArray(planet_object.vertex_AO);
         //draw bound vertex array using bound shader
         glDrawElements(planet_object.draw_mode, planet_object.num_elements, model::INDEX.type, NULL);
 
     }
-
-
-
-
 
 }
 void ApplicationSolar::renderStars() const {
