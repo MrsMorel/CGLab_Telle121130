@@ -12,7 +12,9 @@ public:
     //constructor
     PointLightNode();
     PointLightNode(const glm::vec3& lightColor);
-    PointLightNode(const glm::vec3& lightColor, float lightIntensity); //Do we need to add const glm::vec3
+    PointLightNode(const glm::vec3& lightColor, float lightIntensity);
+    //PointLightNode(std::string const& name, const glm::vec3& lightColor, float lightIntensity);
+
     ~PointLightNode() override; //destructor
     //getter and setter
     float getLightIntensity() const;

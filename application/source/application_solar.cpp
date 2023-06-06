@@ -5,7 +5,7 @@
 #include "shader_loader.hpp"
 #include "model_loader.hpp"
 
-//ogerogijreogjrhjho
+
 #include <glbinding/gl/gl.h>
 // use gl definitions from glbinding 
 using namespace gl;
@@ -275,8 +275,8 @@ void ApplicationSolar::initializeSceneGraph() {
 //root node
     Node root{"Root",glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f})};
 //Point Light
-    PointLightNode pointLightNode;
-    GeometryNode sunGeometry; //TODO
+    PointLightNode pointLightNode(glm::vec3{1.0f,1.0f,1.0f}, 1000.0f); //lightcolor = white
+    GeometryNode sunGeometry("SunGeometry", glm::translate({}, glm::fvec3{0.0f, 0.0f, 0.0f }),std::make_shared<Node>(pointLightNode));
     root.addChild(std::make_shared<Node>(pointLightNode));
 //Camera
     CameraNode cameraNode{}; //TODO
