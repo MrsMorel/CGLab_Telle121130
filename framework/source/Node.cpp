@@ -160,6 +160,10 @@ Node::Node(std::string name, std::shared_ptr<Node> parent):
 parent_{std::move(parent)}, name_{std::move(name)}
 {}
 
+void Node::setPlanetColor(const glm::vec3 &color) {
+    planetColor_ = color;
+}
+
 
 
 
