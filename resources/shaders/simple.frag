@@ -33,7 +33,7 @@ void main() {
 
   //specular
   float specAngle = max(dot(pass_Normal, halfVec), 0.0f); //angle where light hits surface of planet
-  vec3 specular = pow(specAngle, 50) * lightIntensity * colorSpecular;
+  vec3 specular = pow(specAngle, 10) * lightIntensity * colorSpecular;
 
   //diffuse
   float diffAngle = max(dot(pass_Normal, lightVec), 0.0f);

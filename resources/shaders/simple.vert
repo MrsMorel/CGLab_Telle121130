@@ -16,6 +16,8 @@ out vec4 passedPosition;
 void main(void)
 {
 	gl_Position = (ProjectionMatrix  * ViewMatrix * ModelMatrix) * vec4(in_Position, 1.0);
+	//new position
 	passedPosition = ModelMatrix * vec4(in_Position, 1.0f);
+	//modifying normal vector in world space
 	pass_Normal = normalize(vec3(passedPosition - ModelMatrix * vec4(0,0,0,1)));
 }
