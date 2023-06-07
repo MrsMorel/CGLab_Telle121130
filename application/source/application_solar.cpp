@@ -315,6 +315,10 @@ void ApplicationSolar::initializeSceneGraph() {
     //pointLightNode.setPlanetColor(glm::vec3{1.0f,1.0f,1.0f});
     GeometryNode sunGeometry("SunGeometry", glm::translate({}, glm::fvec3{0.0f, 0.0f, 0.0f }),std::make_shared<PointLightNode>(pointLightNode));
     root.addChild(std::make_shared<PointLightNode>(pointLightNode));
+    Node sunNode("sun2" ,glm::translate({},glm::vec3{0.0f,0.0f,0.0f}),  std::make_shared<Node>(root), glm::vec3{1.0f, 1.0f, 1.0f});
+    GeometryNode sunGeo("sun2G", glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), std::make_shared<Node>(sunNode));
+    sunNode.addChild(std::make_shared<Node>(sunGeo)); //adding geonode to planetnode
+    root.addChild(std::make_shared<Node>(sunNode));
 //Camera
     CameraNode cameraNode("Camera", glm::transpose(glm::inverse(m_view_transform)), std::make_shared<Node>(root)); //TODO
     root.addChild(std::make_shared<CameraNode>(cameraNode));
@@ -406,9 +410,11 @@ void ApplicationSolar::renderPlanets() const {
     planets.push_back(sceneGraph_.getRoot().getChildren("Saturn"));
     planets.push_back(sceneGraph_.getRoot().getChildren("Uranus"));
     planets.push_back(sceneGraph_.getRoot().getChildren("Neptun"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("sun2"));
 
 //sun
     // bind shader to upload uniforms
+    /*
     glUseProgram(m_shaders.at("light").handle);
     glm::fmat4 model_matrix = glm::rotate(glm::fmat4{}, float(glfwGetTime()), glm::fvec3{0.0f, 0.0f, 1.0f});
     model_matrix = glm::translate(model_matrix, glm::fvec3{0.0f, 0.0f, 0.0f});
@@ -422,7 +428,7 @@ void ApplicationSolar::renderPlanets() const {
 
     // draw bound vertex array using bound shader
     glDrawElements(planet_object.draw_mode, planet_object.num_elements, model::INDEX.type, NULL);
-
+*/
     ///////Assignment 3
     glUseProgram(m_shaders.at("planet").handle);
 
