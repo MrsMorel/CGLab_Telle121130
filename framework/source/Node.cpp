@@ -153,7 +153,6 @@ Node Node::removeChild(const std::string& name) {
 
 Node::Node(std::string name, const glm::mat4& localTransform, std::shared_ptr<Node> parent):
 parent_{std::move(parent)}, name_{std::move(name)}, localTransform_{localTransform}{
-
 }
 
 Node::Node(std::string name, std::shared_ptr<Node> parent):

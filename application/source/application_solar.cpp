@@ -394,7 +394,6 @@ void ApplicationSolar::renderPlanets() const {
     planets.push_back(sceneGraph_.getRoot().getChildren("Neptun"));
 
     ////Assignment 3:
-    //set colors for planets:
 
     //render PointLight
     // bind shader to upload uniforms

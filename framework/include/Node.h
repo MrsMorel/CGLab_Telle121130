@@ -17,6 +17,8 @@ public:
     Node(std::string name, const glm::mat4& localTransform, const glm::mat4& worldTransform);
     Node(std::string name, const glm::mat4& localTransform, const glm::mat4& worldTransform, std::shared_ptr<Node> parent);
     Node(std::string name, const glm::mat4& localTransform, std::shared_ptr<Node> parent, glm::vec3 const& color);
+    Node(std::string name, const glm::mat4& localTransform, std::shared_ptr<Node> parent);
+
     Node(std::string name, const glm::mat4& localTransform, const glm::mat4& worldTransform, int depth);
     //getter and setter
     std::shared_ptr<Node> getParent() const;
