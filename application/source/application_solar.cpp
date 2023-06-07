@@ -59,12 +59,6 @@ void ApplicationSolar::uploadView() {
   glUseProgram(m_shaders.at("planet").handle);
   glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ViewMatrix"),
                      1, GL_FALSE, glm::value_ptr(view_matrix));
-  /*
-  //Assignment 3:
-  glUseProgram(m_shaders.at("light").handle);
-  glUniformMatrix4fv(m_shaders.at("light").u_locs.at("ViewMatrix"),
-                       1, GL_FALSE, glm::value_ptr(view_matrix));
-*/
 }
 
 void ApplicationSolar::uploadProjection() {
@@ -78,13 +72,6 @@ void ApplicationSolar::uploadProjection() {
     glUseProgram(m_shaders.at("star").handle);
     glUniformMatrix4fv(m_shaders.at("star").u_locs.at("ProjectionMatrix"),
                        1, GL_FALSE, glm::value_ptr(m_view_projection));
-    ////Assignment 3:
-    /*
-    // bind shader to which to upload uniforms
-    glUseProgram(m_shaders.at("light").handle);
-    // upload matrix to gpu
-    glUniformMatrix4fv(m_shaders.at("light").u_locs.at("ProjectionMatrix"),
-                       1, GL_FALSE, glm::value_ptr(m_view_projection));*/
 }
 
 // update uniform locations
@@ -393,12 +380,6 @@ void ApplicationSolar::renderPlanets() const {
     planets.push_back(sceneGraph_.getRoot().getChildren("Uranus"));
     planets.push_back(sceneGraph_.getRoot().getChildren("Neptun"));
 
-    ////Assignment 3:
-
-    //render PointLight
-    // bind shader to upload uniforms
-   // glUseProgram(m_shaders.at("light").handle);
-
 
     // bind shader to upload uniforms
     glUseProgram(m_shaders.at("planet").handle);
@@ -437,7 +418,7 @@ void ApplicationSolar::renderPlanets() const {
         matrix_render = glm::inverseTranspose(matrix_render);
 
         ///////Assignment 3:
-        //glUniform3f(m_shaders.at("planet").u_locs.at("camera_position"),m_view_transform[3][0],m_view_transform[3][1],m_view_transform[3][2]);
+        //planet color is ambient
         glUniform3f(m_shaders.at("planet").u_locs.at("ambientColor"), i->getPlanetColor()[0] ,i->getPlanetColor()[1],i->getPlanetColor()[2]);
 
         //bind the VAO to draw

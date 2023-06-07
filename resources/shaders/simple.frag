@@ -4,7 +4,7 @@ in  vec3 pass_Normal;
 out vec4 out_Color;
 
 //Assignment 3: Lights
-uniform vec3 planetColor;
+uniform vec3 planetColor; //diffuse color
 uniform vec3 ambientColor;
 uniform float lightIntensity;
 uniform vec3 colorSpecular;
