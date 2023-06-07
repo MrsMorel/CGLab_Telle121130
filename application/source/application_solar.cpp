@@ -311,7 +311,7 @@ void ApplicationSolar::initializeSceneGraph() {
 //root node
     Node root{"Root",glm::translate({},glm::vec3{0.0f,0.0f,0.0f}), glm::translate( {}, glm::vec3{1.0f, 0.0f, 0.0f})};
 //Point Light
-    PointLightNode pointLightNode("Sun", glm::vec3{1.0f,1.0f,1.0f}, 100.0f, std::make_shared<Node>(root)); //lightcolor = white
+    PointLightNode pointLightNode("Sun", glm::vec3{1.0f,1.0f,1.0f}, 0.5f, std::make_shared<Node>(root)); //lightcolor = white
     //pointLightNode.setPlanetColor(glm::vec3{1.0f,1.0f,1.0f});
     GeometryNode sunGeometry("SunGeometry", glm::translate({}, glm::fvec3{0.0f, 0.0f, 0.0f }),std::make_shared<PointLightNode>(pointLightNode));
     root.addChild(std::make_shared<PointLightNode>(pointLightNode));
