@@ -306,58 +306,58 @@ void ApplicationSolar::initializeSceneGraph() {
     root.addChild(std::make_shared<CameraNode>(cameraNode));
 
 //Mercury
-    Node mercuryNode("Mercury" ,glm::translate({},glm::vec3{5.79f,0.0f,0.0f}),  std::make_shared<Node>(root));
+    Node mercuryNode("Mercury" ,glm::translate({},glm::vec3{5.79f,0.0f,0.0f}),  std::make_shared<Node>(root), glm::vec3{1.0f, 0.5f, 0.0f});
     GeometryNode mercuryGeo("MercuryG", glm::translate({},glm::vec3{5.79f,0.0f,0.0f}), std::make_shared<Node>(mercuryNode));
     //geoNode do not translate
     mercuryNode.addChild(std::make_shared<Node>(mercuryGeo)); //adding geonode to planetnode
     root.addChild(std::make_shared<Node>(mercuryNode)); //adding node to root
 //Venus
-    Node venusNode("Venus" ,glm::translate({},glm::vec3{10.82f,0.0f,0.0f}),  std::make_shared<Node>(root));
+    Node venusNode("Venus" ,glm::translate({},glm::vec3{10.82f,0.0f,0.0f}),  std::make_shared<Node>(root), glm::vec3{0.9f, 0.8f, 0.0f});
     GeometryNode venusGeo("VenusG", glm::translate({},glm::vec3{10.82f,0.0f,0.0f}), std::make_shared<Node>(venusNode));
     venusNode.addChild(std::make_shared<Node>(venusGeo));//adding geonode to planetnode
     root.addChild(std::make_shared<Node>(venusNode));//adding node to root
 
 
 //Earth
-    Node earthNode("Earth" ,glm::translate({},glm::vec3{14.96f,0.0f,0.0f}),  std::make_shared<Node>(root));
+    Node earthNode("Earth" ,glm::translate({},glm::vec3{14.96f,0.0f,0.0f}),  std::make_shared<Node>(root), glm::vec3{0.0f, 0.5f, 1.0f});
     GeometryNode earthGeo("EarthG" ,glm::translate({},glm::vec3{14.96f,0.0f,0.0f}),  std::make_shared<Node>(earthNode));
     earthNode.addChild(std::make_shared<Node>(earthGeo));
 
 //Moon TODO
 //parent relation not right
-    Node moonNode("Moon" ,glm::translate({},glm::vec3{10.0f,0.0f,0.0f}),  std::make_shared<Node>(earthNode)); //moon has earth as parent node
+    Node moonNode("Moon" ,glm::translate({},glm::vec3{10.0f,0.0f,0.0f}),  std::make_shared<Node>(earthNode), glm::vec3{0.7f, 0.7f, 0.7f}); //moon has earth as parent node
     GeometryNode moonGeo("MoonG" ,glm::translate({},glm::vec3{10.0f,0.0f,0.0f}),  std::make_shared<Node>(moonNode));
     moonNode.addChild(std::make_shared<Node>(moonGeo));
     earthNode.addChild(std::make_shared<Node>(moonNode)); //earth node holds moon node
     root.addChild(std::make_shared<Node>(earthNode));
 
 //Mars
-    Node marsNode("Mars" ,glm::translate({},glm::vec3{22.8f,0.0f,0.0f}),  std::make_shared<Node>(root));
+    Node marsNode("Mars" ,glm::translate({},glm::vec3{22.8f,0.0f,0.0f}),  std::make_shared<Node>(root), glm::vec3{1.0f, 0.0f, 0.0f});
     GeometryNode marsGeo("MarsG" ,glm::translate({},glm::vec3{22.8f,0.0f,0.0f}),  std::make_shared<Node>(marsNode));
     marsNode.addChild(std::make_shared<Node>(marsGeo));
     root.addChild(std::make_shared<Node>(marsNode));
 
 
 //Jupiter
-    Node jupiterNode("Jupiter" ,glm::translate({},glm::vec3{77.85f,0.0f,0.0f}),  std::make_shared<Node>(root));
+    Node jupiterNode("Jupiter" ,glm::translate({},glm::vec3{77.85f,0.0f,0.0f}),  std::make_shared<Node>(root), glm::vec3{0.7f, 0.3f, 0.1f});
     GeometryNode jupiterGeo("JupiterG" ,glm::translate({},glm::vec3{77.85f,0.0f,0.0f}),  std::make_shared<Node>(jupiterNode));
     jupiterNode.addChild(std::make_shared<Node>(jupiterGeo));
     root.addChild(std::make_shared<Node>(jupiterNode));
 
 //Saturn
-    Node saturnNode("Saturn" ,glm::translate({},glm::vec3{143.2f,0.0f,0.0f}), std::make_shared<Node>(root));
+    Node saturnNode("Saturn" ,glm::translate({},glm::vec3{143.2f,0.0f,0.0f}), std::make_shared<Node>(root), glm::vec3{0.8f, 0.8f, 0.6f});
     GeometryNode saturnGeo("SaturnG" ,glm::translate({},glm::vec3{143.2f,0.0f,0.0f}),  std::make_shared<Node>(saturnNode));
     saturnNode.addChild(std::make_shared<Node>(saturnGeo));
     root.addChild(std::make_shared<Node>(saturnNode));
 
 //Uranus
-    Node uranusNode("Uranus" ,glm::translate({},glm::vec3{250.0f,0.0f,0.0f}),  std::make_shared<Node>(root));
+    Node uranusNode("Uranus" ,glm::translate({},glm::vec3{250.0f,0.0f,0.0f}),  std::make_shared<Node>(root), glm::vec3{0.5f, 0.8f, 1.0f});
     GeometryNode uranusGeo("UranusG" ,glm::translate({},glm::vec3{250.0f,0.0f,0.0f}),  std::make_shared<Node>(uranusNode));
     uranusNode.addChild(std::make_shared<Node>(uranusGeo));
     root.addChild(std::make_shared<Node>(uranusNode));
 
 //Neptun
-    Node neptunNode("Neptun" ,glm::translate({},glm::vec3{500.0f,0.0f,0.0f}), std::make_shared<Node>(root));
+    Node neptunNode("Neptun" ,glm::translate({},glm::vec3{500.0f,0.0f,0.0f}), std::make_shared<Node>(root), glm::vec3{0.0f, 0.0f, 0.8f});
     GeometryNode neptunGeo("NeptunG" ,glm::translate({},glm::vec3{500.0f,0.0f,0.0f}),  std::make_shared<Node>(neptunNode));
     neptunNode.addChild(std::make_shared<Node>(neptunGeo));
     root.addChild(std::make_shared<Node>(neptunNode));
@@ -394,9 +394,34 @@ void ApplicationSolar::renderPlanets() const {
     planets.push_back(sceneGraph_.getRoot().getChildren("Neptun"));
 
     ////Assignment 3:
+    //set colors for planets:
+
     //render PointLight
     // bind shader to upload uniforms
    // glUseProgram(m_shaders.at("light").handle);
+    //Assignment 3 Task 2
+    //Missing the location of Color...
+    /*
+    if (i->getName() == "Mercury") {
+        glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 1.0f, 0.5f, 0.0f); // orange
+    } else if (i->getName() == "Venus") {
+        glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.9f, 0.8f, 0.0f); // yellow
+    } else if (i->getName() == "Earth") {
+        glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.0f, 0.5f, 1.0f); // blue
+    } else if (i->getName() == "Moon") {
+        glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.7f, 0.7f, 0.7f); // gray
+    } else if (i->getName() == "Mars") {
+        glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 1.0f, 0.0f, 0.0f); // red
+    } else if (i->getName() == "Jupiter") {
+        glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.7f, 0.3f, 0.1f); // brown
+    } else if (i->getName() == "Saturn") {
+        glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.8f, 0.8f, 0.6f); // light yellow
+    } else if (i->getName() == "Uranus") {
+        glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.5f, 0.8f, 1.0f); // light blue
+    } else if (i->getName() == "Neptun") {
+        glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.0f, 0.0f, 0.8f); // dark blue
+    }
+    */
 
     // bind shader to upload uniforms
     glUseProgram(m_shaders.at("planet").handle);
@@ -434,29 +459,7 @@ void ApplicationSolar::renderPlanets() const {
                            1, GL_FALSE, glm::value_ptr(matrix_render));
         matrix_render = glm::inverseTranspose(matrix_render);
 
-        //Assignment 3 Task 2
-        //Missing the location of Color...
-        /*
-        if (i->getName() == "Mercury") {
-            glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 1.0f, 0.5f, 0.0f); // orange
-        } else if (i->getName() == "Venus") {
-            glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.9f, 0.8f, 0.0f); // yellow
-        } else if (i->getName() == "Earth") {
-            glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.0f, 0.5f, 1.0f); // blue
-        } else if (i->getName() == "Moon") {
-            glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.7f, 0.7f, 0.7f); // gray
-        } else if (i->getName() == "Mars") {
-            glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 1.0f, 0.0f, 0.0f); // red
-        } else if (i->getName() == "Jupiter") {
-            glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.7f, 0.3f, 0.1f); // brown
-        } else if (i->getName() == "Saturn") {
-            glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.8f, 0.8f, 0.6f); // light yellow
-        } else if (i->getName() == "Uranus") {
-            glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.5f, 0.8f, 1.0f); // light blue
-        } else if (i->getName() == "Neptun") {
-            glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.0f, 0.0f, 0.8f); // dark blue
-        }
-        */
+
 
         //bind the VAO to draw
         glBindVertexArray(planet_object.vertex_AO);
