@@ -229,6 +229,9 @@ void ApplicationSolar::initializeGeometry() {
 
 ///////////////////////////// callback functions for window events ////////////
 // handle key input
+//Newly add
+bool isCelShadingMode = false;
+
 void ApplicationSolar::keyCallback(int key, int action, int mods) {
   if (key == GLFW_KEY_W  && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
     m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.0f, 0.0f, -0.1f});
@@ -246,7 +249,15 @@ void ApplicationSolar::keyCallback(int key, int action, int mods) {
       m_view_transform = glm::translate(m_view_transform, glm::fvec3{0.1f, 0.0f, 0.1f});
       uploadView();
   }
+  //Newly add(Cel-Shading)
+  else if(key == GLFW_KEY_1 && (action == GLFW_PRESS || action == GLFW_REPEAT)){
+      isCelShadingMode = false;
+  }
+  else if(key == GLFW_KEY_2 && (action == GLFW_PRESS || action == GLFW_REPEAT)){
+      isCelShadingMode = false;
+  }
 }
+
 
 //handle delta mouse movement input
 void ApplicationSolar::mouseCallback(double pos_x, double pos_y) {
@@ -411,6 +422,39 @@ void ApplicationSolar::renderPlanets() const {
 
     // draw bound vertex array using bound shader
     glDrawElements(planet_object.draw_mode, planet_object.num_elements, model::INDEX.type, NULL);
+
+    ///////Assignment 3
+    glUseProgram(m_shaders.at("planet").handle);
+
+    auto sun = std::dynamic_pointer_cast<PointLightNode>(sceneGraph_.getRoot().getChildren("Sun"));
+
+    //Get the location of uniform variable in shader program
+    GLint planetColorLoc = glGetUniformLocation(m_shaders.at("planet").handle,"planetColor");
+    GLint lightIntensityLoc = glGetUniformLocation(m_shaders.at("planet").handle,"lightIntensity");
+    GLint colorSpecularLoc = glGetUniformLocation(m_shaders.at("planet").handle,"colorSpecular");
+    GLint lightPositionLoc = glGetUniformLocation(m_shaders.at("planet").handle,"lightPosition");
+    //Pass the specific value to the corresponding uniform variable for shader program to use during rending process
+
+    glm::vec3 planetColor = sun->getPlanetColor();
+    float lightIntensity = sun->getLightIntensity();
+    glm::mat4 lightPosition = sun->getWorldTransform();
+    //diffuse light
+    glUniform3f(planetColorLoc,0.5f,0.5f,0.5f);
+    //light intensity
+    glUniform1f(lightIntensityLoc,lightIntensity);
+    //specular light
+    glUniform3f(colorSpecularLoc,1.0f,1.0f,1.0f);
+    //light ray position vector
+    glUniform3f(lightPositionLoc,lightPosition[3][0],lightPosition[3][1],lightPosition[3][2]);
+
+    //Newly add(Cel-Shading)
+    if(isCelShadingMode){
+        //Cel-Shading
+        glUniform3f(planetColorLoc,0.5f,0.5f,0.5f);
+    }else{
+        //Blinn-Phong
+    }
+
     float time = 10.0f;
 
     for ( const std::shared_ptr<Node>& i : planets) {
@@ -436,6 +480,10 @@ void ApplicationSolar::renderPlanets() const {
         ///////Assignment 3:
         //planet color is ambient
         glUniform3f(m_shaders.at("planet").u_locs.at("ambientColor"), i->getPlanetColor()[0] ,i->getPlanetColor()[1],i->getPlanetColor()[2]);
+        //get camera position
+        glm::vec4 cameraPosition = sceneGraph_.getRoot().getChildren("Camera")->getLocalTransform() * m_view_transform * glm::vec4{0.0f,0.0f,0.0f,1.0f};
+        //camera position for computing vectors
+        glUniform3f(m_shaders.at("planet").u_locs.at("cameraPosition"), cameraPosition.x,cameraPosition.y,cameraPosition.z);
 
         //bind the VAO to draw
         glBindVertexArray(planet_object.vertex_AO);

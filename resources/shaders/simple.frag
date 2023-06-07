@@ -10,9 +10,20 @@ uniform float lightIntensity;
 uniform vec3 colorSpecular;
 uniform vec3 lightPosition; //light direction
 uniform vec3 cameraPosition;
-in vec3 passedPosition;
+in vec4 passedPosition;
+
+//Newly add(Cel-Shading)
+vec3 color1 = vec3(1.0,0.0,0.0);
+vec3 color2 = vec3(0.0,1.0,0.0);
+vec3 color3 = vec3(0.0,0.0,1.0);
+float threshold1 = 0.6;
+float threshold2 = 0.3;
+
 
 out vec3 passedColor;
+
+//Newly add(Cel-Shading)
+out vec3 celShadingColor;
 
 void main() {
 //Blinn-Phong lightning model
@@ -28,7 +39,33 @@ void main() {
   float diffAngle = max(dot(pass_Normal, lightVec), 0.0f);
   vec3 diffuse = diffAngle * lightIntensity * planetColor;
 
+  //Newly add
+  //Intensity discretization based on diffuseColor(Cel-Shading)
+  //float brightness = calculateBrightness(diffuse);
+  //vec3 celShadedColor = discretizeColor(brightness);
+
   //addition of light
   out_Color = vec4((ambientColor + diffuse + specular), 1.0);
 
+  //Newly add(Cel-Shading)
+  //celShadingColor = celShadedColor;
 }
+
+//Newly add(Cel-Shading)
+/*
+float calculateBrightness(vec3 color){
+  float brightness = (color.r + color.g + color.b)/3;
+  return brightness;
+}
+
+vec3 discretizeColor(float brightness){
+  if(brightness > threshold1){
+    return color1;
+  }
+  else if(brightness > threshold2){
+    return color2;
+  }
+  else{
+    return color3;
+  }
+}*/
