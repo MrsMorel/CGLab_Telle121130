@@ -56,13 +56,18 @@ void ApplicationSolar::uploadView() {
   glUniformMatrix4fv(m_shaders.at("star").u_locs.at("ModelViewMatrix"),
                        1, GL_FALSE, glm::value_ptr(view_matrix));
 
-    glUseProgram(m_shaders.at("planet").handle);
-    glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ViewMatrix"),
+  glUseProgram(m_shaders.at("planet").handle);
+  glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ViewMatrix"),
                      1, GL_FALSE, glm::value_ptr(view_matrix));
+  //Assignment 3:
+  glUseProgram(m_shaders.at("light").handle);
+  glUniformMatrix4fv(m_shaders.at("light").u_locs.at("ViewMatrix"),
+                       1, GL_FALSE, glm::value_ptr(view_matrix));
+
 }
 
 void ApplicationSolar::uploadProjection() {
-    // bind shader to which to upload unforms
+    // bind shader to which to upload uniforms
     glUseProgram(m_shaders.at("planet").handle);
     // upload matrix to gpu
     glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ProjectionMatrix"),
@@ -71,6 +76,12 @@ void ApplicationSolar::uploadProjection() {
     //the same for stars
     glUseProgram(m_shaders.at("star").handle);
     glUniformMatrix4fv(m_shaders.at("star").u_locs.at("ProjectionMatrix"),
+                       1, GL_FALSE, glm::value_ptr(m_view_projection));
+    ////Assignment 3:
+    // bind shader to which to upload uniforms
+    glUseProgram(m_shaders.at("light").handle);
+    // upload matrix to gpu
+    glUniformMatrix4fv(m_shaders.at("light").u_locs.at("ProjectionMatrix"),
                        1, GL_FALSE, glm::value_ptr(m_view_projection));
 }
 
@@ -161,6 +172,15 @@ void ApplicationSolar::initializeShaderPrograms() {
             {GL_FRAGMENT_SHADER, m_resource_path + "shaders/vao.frag"}}});
   m_shaders.at("star").u_locs["ModelViewMatrix"] = -1;
   m_shaders.at("star").u_locs["ProjectionMatrix"] = -1;
+
+  /////Assignment 3:
+  //shader for PointLightNode
+  m_shaders.emplace("light", shader_program{{{GL_VERTEX_SHADER,m_resource_path + "shaders/light.vert"},
+                    {GL_FRAGMENT_SHADER, m_resource_path + "shaders/light.frag"}}});
+  m_shaders.at("light").u_locs["NormalMatrix"] = -1;
+  m_shaders.at("light").u_locs["ModelMatrix"] = -1;
+  m_shaders.at("light").u_locs["ViewMatrix"] = -1;
+  m_shaders.at("light").u_locs["ProjectionMatrix"] = -1;
 }
 
 // load models
