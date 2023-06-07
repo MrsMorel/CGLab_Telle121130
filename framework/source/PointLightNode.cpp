@@ -2,6 +2,8 @@
 // Created by anne on 30.04.2023.
 //
 #include "PointLightNode.h"
+
+#include <utility>
 PointLightNode::PointLightNode():
         Node(){}
 
@@ -24,8 +26,11 @@ void PointLightNode::setLightColor(const glm::vec3& new_LightColor) {
 }
 
 PointLightNode::PointLightNode(const glm::vec3& lightColor):
-lightColor_{lightColor}
+    lightColor_{lightColor}
 {}
 
 PointLightNode::PointLightNode(const glm::vec3& lightColor, float lightIntensity):
-lightIntensity_{lightIntensity}, lightColor_{lightColor}{}
+    lightIntensity_{lightIntensity}, lightColor_{lightColor}{}
+
+PointLightNode::PointLightNode(std::string name, const glm::vec3 &lightColor, float lightIntensity):
+    name_{std::move(name)},lightIntensity_{lightIntensity}, lightColor_{lightColor}{}
