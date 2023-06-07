@@ -59,11 +59,12 @@ void ApplicationSolar::uploadView() {
   glUseProgram(m_shaders.at("planet").handle);
   glUniformMatrix4fv(m_shaders.at("planet").u_locs.at("ViewMatrix"),
                      1, GL_FALSE, glm::value_ptr(view_matrix));
+  /*
   //Assignment 3:
   glUseProgram(m_shaders.at("light").handle);
   glUniformMatrix4fv(m_shaders.at("light").u_locs.at("ViewMatrix"),
                        1, GL_FALSE, glm::value_ptr(view_matrix));
-
+*/
 }
 
 void ApplicationSolar::uploadProjection() {
@@ -78,11 +79,12 @@ void ApplicationSolar::uploadProjection() {
     glUniformMatrix4fv(m_shaders.at("star").u_locs.at("ProjectionMatrix"),
                        1, GL_FALSE, glm::value_ptr(m_view_projection));
     ////Assignment 3:
+    /*
     // bind shader to which to upload uniforms
     glUseProgram(m_shaders.at("light").handle);
     // upload matrix to gpu
     glUniformMatrix4fv(m_shaders.at("light").u_locs.at("ProjectionMatrix"),
-                       1, GL_FALSE, glm::value_ptr(m_view_projection));
+                       1, GL_FALSE, glm::value_ptr(m_view_projection));*/
 }
 
 // update uniform locations
@@ -175,12 +177,13 @@ void ApplicationSolar::initializeShaderPrograms() {
 
   /////Assignment 3:
   //shader for PointLightNode
+  /*
   m_shaders.emplace("light", shader_program{{{GL_VERTEX_SHADER,m_resource_path + "shaders/light.vert"},
                     {GL_FRAGMENT_SHADER, m_resource_path + "shaders/light.frag"}}});
   m_shaders.at("light").u_locs["NormalMatrix"] = -1;
   m_shaders.at("light").u_locs["ModelMatrix"] = -1;
   m_shaders.at("light").u_locs["ViewMatrix"] = -1;
-  m_shaders.at("light").u_locs["ProjectionMatrix"] = -1;
+  m_shaders.at("light").u_locs["ProjectionMatrix"] = -1;*/
 }
 
 // load models
@@ -297,10 +300,10 @@ void ApplicationSolar::initializeSceneGraph() {
 //Point Light
     PointLightNode pointLightNode("Sun", glm::vec3{1.0f,1.0f,1.0f}, 1000.0f, std::make_shared<Node>(root)); //lightcolor = white
     GeometryNode sunGeometry("SunGeometry", glm::translate({}, glm::fvec3{0.0f, 0.0f, 0.0f }),std::make_shared<Node>(pointLightNode));
-    root.addChild(std::make_shared<Node>(pointLightNode));
+    root.addChild(std::make_shared<PointLightNode>(pointLightNode));
 //Camera
     CameraNode cameraNode("Camera", glm::transpose(glm::inverse(m_view_transform)), std::make_shared<Node>(root)); //TODO
-    root.addChild(std::make_shared<Node>(cameraNode));
+    root.addChild(std::make_shared<CameraNode>(cameraNode));
 
 //Mercury
     Node mercuryNode("Mercury" ,glm::translate({},glm::vec3{5.79f,0.0f,0.0f}),  std::make_shared<Node>(root));
@@ -389,6 +392,12 @@ void ApplicationSolar::renderPlanets() const {
     planets.push_back(sceneGraph_.getRoot().getChildren("Saturn"));
     planets.push_back(sceneGraph_.getRoot().getChildren("Uranus"));
     planets.push_back(sceneGraph_.getRoot().getChildren("Neptun"));
+
+    ////Assignment 3:
+    //render PointLight
+    // bind shader to upload uniforms
+   // glUseProgram(m_shaders.at("light").handle);
+
     // bind shader to upload uniforms
     glUseProgram(m_shaders.at("planet").handle);
     glm::fmat4 model_matrix = glm::rotate(glm::fmat4{}, float(glfwGetTime()), glm::fvec3{0.0f, 0.0f, 1.0f});
@@ -427,6 +436,7 @@ void ApplicationSolar::renderPlanets() const {
 
         //Assignment 3 Task 2
         //Missing the location of Color...
+        /*
         if (i->getName() == "Mercury") {
             glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 1.0f, 0.5f, 0.0f); // orange
         } else if (i->getName() == "Venus") {
@@ -446,6 +456,7 @@ void ApplicationSolar::renderPlanets() const {
         } else if (i->getName() == "Neptun") {
             glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.0f, 0.0f, 0.8f); // dark blue
         }
+        */
 
         //bind the VAO to draw
         glBindVertexArray(planet_object.vertex_AO);
