@@ -167,6 +167,10 @@ Node::Node(std::string name, const glm::mat4 &localTransform,
            std::shared_ptr<Node> parent, const glm::vec3 &color):
     parent_{std::move(parent)}, name_{std::move(name)}, localTransform_{localTransform}, planetColor_{color}{}
 
+glm::vec3 Node::getPlanetColor() {
+    return planetColor_;
+}
+
 
 
 

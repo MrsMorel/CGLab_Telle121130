@@ -176,14 +176,13 @@ void ApplicationSolar::initializeShaderPrograms() {
   m_shaders.at("star").u_locs["ProjectionMatrix"] = -1;
 
   /////Assignment 3:
-  //shader for PointLightNode
-  /*
-  m_shaders.emplace("light", shader_program{{{GL_VERTEX_SHADER,m_resource_path + "shaders/light.vert"},
-                    {GL_FRAGMENT_SHADER, m_resource_path + "shaders/light.frag"}}});
-  m_shaders.at("light").u_locs["NormalMatrix"] = -1;
-  m_shaders.at("light").u_locs["ModelMatrix"] = -1;
-  m_shaders.at("light").u_locs["ViewMatrix"] = -1;
-  m_shaders.at("light").u_locs["ProjectionMatrix"] = -1;*/
+
+  m_shaders.at("planet").u_locs["planetColor"] = -1;
+  m_shaders.at("planet").u_locs["ambientColor"] = -1;
+  m_shaders.at("planet").u_locs["lightPosition"] = -1;
+  m_shaders.at("planet").u_locs["lightIntensity"] = -1;
+  m_shaders.at("planet").u_locs["colorSpecular"] = -1;
+  m_shaders.at("planet").u_locs["cameraPosition"] = -1;
 }
 
 // load models
@@ -381,6 +380,7 @@ void ApplicationSolar::render() const {
 void ApplicationSolar::renderPlanets() const {
     //making new list for only planets
     std::vector<std::shared_ptr<Node>> planets;
+    //
     // pushing planet nodes into new list
     planets.push_back(sceneGraph_.getRoot().getChildren("Mercury"));
     planets.push_back(sceneGraph_.getRoot().getChildren("Venus"));
@@ -398,29 +398,7 @@ void ApplicationSolar::renderPlanets() const {
     //render PointLight
     // bind shader to upload uniforms
    // glUseProgram(m_shaders.at("light").handle);
-    //Assignment 3 Task 2
-    //Missing the location of Color...
-    /*
-    if (i->getName() == "Mercury") {
-        glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 1.0f, 0.5f, 0.0f); // orange
-    } else if (i->getName() == "Venus") {
-        glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.9f, 0.8f, 0.0f); // yellow
-    } else if (i->getName() == "Earth") {
-        glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.0f, 0.5f, 1.0f); // blue
-    } else if (i->getName() == "Moon") {
-        glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.7f, 0.7f, 0.7f); // gray
-    } else if (i->getName() == "Mars") {
-        glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 1.0f, 0.0f, 0.0f); // red
-    } else if (i->getName() == "Jupiter") {
-        glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.7f, 0.3f, 0.1f); // brown
-    } else if (i->getName() == "Saturn") {
-        glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.8f, 0.8f, 0.6f); // light yellow
-    } else if (i->getName() == "Uranus") {
-        glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.5f, 0.8f, 1.0f); // light blue
-    } else if (i->getName() == "Neptun") {
-        glUniform3f(m_shaders.at("planet").u_locs.at("Color"), 0.0f, 0.0f, 0.8f); // dark blue
-    }
-    */
+
 
     // bind shader to upload uniforms
     glUseProgram(m_shaders.at("planet").handle);
@@ -458,7 +436,9 @@ void ApplicationSolar::renderPlanets() const {
                            1, GL_FALSE, glm::value_ptr(matrix_render));
         matrix_render = glm::inverseTranspose(matrix_render);
 
-
+        ///////Assignment 3:
+        //glUniform3f(m_shaders.at("planet").u_locs.at("camera_position"),m_view_transform[3][0],m_view_transform[3][1],m_view_transform[3][2]);
+        glUniform3f(m_shaders.at("planet").u_locs.at("ambientColor"), i->getPlanetColor()[0] ,i->getPlanetColor()[1],i->getPlanetColor()[2]);
 
         //bind the VAO to draw
         glBindVertexArray(planet_object.vertex_AO);
@@ -476,6 +456,11 @@ void ApplicationSolar::renderStars() const {
     //draw array of stars
     //std::cout << star_model.num_elements;
     glDrawArrays(star_model.draw_mode,GLint(0),star_model.num_elements);
+
+}
+
+void ApplicationSolar::renderSun() const {
+    glUseProgram(m_shaders.at("planet").handle);
 
 }
 

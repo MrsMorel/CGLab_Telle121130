@@ -31,6 +31,7 @@ class ApplicationSolar : public Application {
   SceneGraph sceneGraph_;
   void renderStars() const;
   void renderPlanets() const;
+  void renderSun() const;
 
  protected:
   void initializeShaderPrograms();

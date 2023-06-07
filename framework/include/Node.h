@@ -34,6 +34,8 @@ public:
     void setWorldTransform(const glm::mat4& worldTransform);
     void addChild(const std::shared_ptr<Node>& new_node); //adding node child
     Node removeChild(const std::string& name); // removing node child
+
+    glm::vec3 getPlanetColor();
     void setPlanetColor(glm::vec3 const& color);
 
 private:

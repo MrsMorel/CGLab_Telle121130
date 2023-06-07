@@ -23,7 +23,7 @@ void main() {
 
   //specular
   float specAngle = max(dot(halfVec, pass_Normal), 0.0f);
-  vec3 specular = pow(specAngle, 5.0f) * lightIntensity * colorSpecular;
+  vec3 specular = pow(specAngle, 5) * lightIntensity * colorSpecular;
 
   //diffuse
   float diffAngle = max(dot(pass_Normal, lightVec), 0.0f);
