@@ -8,22 +8,21 @@ uniform vec3 planetColor; //diffuse color
 uniform vec3 ambientColor;
 uniform float lightIntensity;
 uniform vec3 colorSpecular;
-uniform vec3 lightPosition;
+uniform vec3 lightPosition; //light direction
 uniform vec3 cameraPosition;
 in vec3 passedPosition;
 
 out vec3 passedColor;
 
 void main() {
-  //passed_Color = Color;
 //Blinn-Phong lightning model
   vec3 viewVec = normalize(cameraPosition - vec3(passedPosition));
   vec3 lightVec = normalize(lightPosition - vec3(passedPosition));  //point to light vector
   vec3 halfVec = normalize(lightVec + viewVec); //half-angle vector between view vector and light vector
 
   //specular
-  float specAngle = max(dot(halfVec, pass_Normal), 0.0f);
-  vec3 specular = pow(specAngle, 5) * lightIntensity * colorSpecular;
+  float specAngle = max(dot(pass_Normal, halfVec), 0.0f); //angle where light hits surface of planet
+  vec3 specular = pow(specAngle, 50) * lightIntensity * colorSpecular;
 
   //diffuse
   float diffAngle = max(dot(pass_Normal, lightVec), 0.0f);
