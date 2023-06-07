@@ -12,6 +12,7 @@ public:
     virtual ~Node(); //destructor
     //lots of different constructors
     Node(std::string name);
+    Node(std::string name,std::shared_ptr<Node> parent);
     Node(std::string name, const glm::mat4& localTransform);
     Node(std::string name, const glm::mat4& localTransform, const glm::mat4& worldTransform);
     Node(std::string name, const glm::mat4& localTransform, const glm::mat4& worldTransform, std::shared_ptr<Node> parent);

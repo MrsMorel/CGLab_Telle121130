@@ -13,7 +13,7 @@ public:
     PointLightNode();
     PointLightNode(const glm::vec3& lightColor);
     PointLightNode(const glm::vec3& lightColor, float lightIntensity);
-    PointLightNode(std::string  name, const glm::vec3& lightColor, float lightIntensity);
+    PointLightNode(std::string  name, const glm::vec3& lightColor, float lightIntensity, std::shared_ptr<Node> parentNode);
 
     ~PointLightNode() override; //destructor
     //getter and setter

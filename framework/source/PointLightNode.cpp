@@ -32,5 +32,5 @@ PointLightNode::PointLightNode(const glm::vec3& lightColor):
 PointLightNode::PointLightNode(const glm::vec3& lightColor, float lightIntensity):
     lightIntensity_{lightIntensity}, lightColor_{lightColor}{}
 
-PointLightNode::PointLightNode(std::string name, const glm::vec3 &lightColor, float lightIntensity):
-    name_{std::move(name)},lightIntensity_{lightIntensity}, lightColor_{lightColor}{}
+PointLightNode::PointLightNode(std::string name, const glm::vec3 &lightColor, float lightIntensity, std::shared_ptr<Node> parentNode):
+    Node{std::move(name), std::move(parentNode)},lightIntensity_{lightIntensity}, lightColor_{lightColor}{}

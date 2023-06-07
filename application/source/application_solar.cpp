@@ -299,7 +299,7 @@ void ApplicationSolar::initializeSceneGraph() {
     GeometryNode sunGeometry("SunGeometry", glm::translate({}, glm::fvec3{0.0f, 0.0f, 0.0f }),std::make_shared<Node>(pointLightNode));
     root.addChild(std::make_shared<Node>(pointLightNode));
 //Camera
-    CameraNode cameraNode{}; //TODO
+    CameraNode cameraNode("Camera", glm::transpose(glm::inverse(m_view_transform)),); //TODO
     root.addChild(std::make_shared<Node>(cameraNode));
 
 //Mercury
