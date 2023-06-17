@@ -32,7 +32,7 @@ ApplicationSolar::ApplicationSolar(std::string const& resource_path)
   initializeGeometry();
   generateStars(); //Assignment 2
   initializeShaderPrograms();
-  //initializeTextures(); //Assignment 4
+  initializeTextures(); //Assignment 4
 }
 
 ApplicationSolar::~ApplicationSolar() {
@@ -187,6 +187,9 @@ void ApplicationSolar::initializeShaderPrograms() {
     m_shaders.at("light").u_locs["ModelMatrix"] = -1;
     m_shaders.at("light").u_locs["ViewMatrix"] = -1;
     m_shaders.at("light").u_locs["ProjectionMatrix"] = -1;
+
+  /// Assignment 4:
+
 }
 
 // load models
@@ -380,17 +383,18 @@ void ApplicationSolar::initializeSceneGraph() {
     GeometryNode neptunGeo("NeptunG" ,glm::translate({},glm::vec3{500.0f,0.0f,0.0f}),  std::make_shared<Node>(neptunNode));
     neptunNode.addChild(std::make_shared<Node>(neptunGeo));
     root.addChild(std::make_shared<Node>(neptunNode));
-    ////Assignment 4: saving textures to node
-    sunNode.setTexture(m_resource_path + "textures/sunmap.jpg");
-    mercuryNode.setTexture(m_resource_path + "textures/mercurymap.jpg");
-    venusNode.setTexture(m_resource_path + "textures/venusmap.jpg");
-    earthNode.setTexture(m_resource_path + "textures/earthmap1k.jpg");
-    moonNode.setTexture(m_resource_path + "textures/moonmap1k.jpg");
-    marsNode.setTexture(m_resource_path + "textures/marsmap1k.jpg");
-    jupiterNode.setTexture(m_resource_path + "textures/jupiter2_1k.jpg");
-    saturnNode.setTexture(m_resource_path + "textures/saturnmap.jpg");
-    uranusNode.setTexture(m_resource_path + "textures/uranusmap.jpg");
-    neptunNode.setTexture(m_resource_path + "textures/neptunemap.jpg");
+
+////Assignment 4: saving textures to node
+    sunNode.setTexture(m_resource_path + "textures/sunmap.png");
+    mercuryNode.setTexture(m_resource_path + "textures/mercurymap.png");
+    venusNode.setTexture(m_resource_path + "textures/venusmap.png");
+    earthNode.setTexture(m_resource_path + "textures/earthmap1k.png");
+    moonNode.setTexture(m_resource_path + "textures/moonmap1k.png");
+    marsNode.setTexture(m_resource_path + "textures/marsmap1k.png");
+    jupiterNode.setTexture(m_resource_path + "textures/jupiter2_1k.png");
+    saturnNode.setTexture(m_resource_path + "textures/saturnmap.png");
+    uranusNode.setTexture(m_resource_path + "textures/uranusmap.png");
+    neptunNode.setTexture(m_resource_path + "textures/neptunemap.png");
     //std::cout <<  sunNode.getTexture()<< std::endl;
 
     SceneGraph sceneGraph{"SceneGraph",root};
@@ -531,10 +535,34 @@ void ApplicationSolar::renderSun() const {
 }
 
 void ApplicationSolar::initializeTextures() {
-    //loading textures:
-    //pixel_data planet_textures = texture_loader::file(m_resource_path);
-    //overwrite an instance of the pixel data structure
+
     //todo: Modify in the model loader::obj() function the last parameter in “model::NORMAL| model::TEXTCOORD”
+    //making new list for only planets
+    std::vector<std::shared_ptr<Node>> planets;
+    //
+    // pushing planet nodes into new list
+    planets.push_back(sceneGraph_.getRoot().getChildren("Mercury"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("Venus"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("Mercury"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("Earth"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("Moon"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("Mars"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("Jupiter"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("Saturn"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("Uranus"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("Neptun"));
+    planets.push_back(sceneGraph_.getRoot().getChildren("sun2"));
+
+    for(auto const& planet: planets){
+        //loading textures by overwrite an instance of the pixel data structure:
+        pixel_data planet_textures;
+        try{
+            planet_textures = texture_loader::file(planet->getTexture());
+            std::cout << "loading texture " + planet->getTexture() << std::endl;
+        } catch(std::exception const& error){
+            std::cout << "could not load texture " + planet->getName() << std::endl;
+            }
+    }
 }
 
 // exe entry point
