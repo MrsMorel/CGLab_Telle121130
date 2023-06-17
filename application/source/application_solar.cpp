@@ -32,7 +32,7 @@ ApplicationSolar::ApplicationSolar(std::string const& resource_path)
   initializeGeometry();
   generateStars(); //Assignment 2
   initializeShaderPrograms();
-  initializeTextures(); //Assignment 4
+  //initializeTextures(); //Assignment 4
 }
 
 ApplicationSolar::~ApplicationSolar() {
@@ -380,6 +380,18 @@ void ApplicationSolar::initializeSceneGraph() {
     GeometryNode neptunGeo("NeptunG" ,glm::translate({},glm::vec3{500.0f,0.0f,0.0f}),  std::make_shared<Node>(neptunNode));
     neptunNode.addChild(std::make_shared<Node>(neptunGeo));
     root.addChild(std::make_shared<Node>(neptunNode));
+    ////Assignment 4: saving textures to node
+    sunNode.setTexture(m_resource_path + "textures/sunmap.jpg");
+    mercuryNode.setTexture(m_resource_path + "textures/mercurymap.jpg");
+    venusNode.setTexture(m_resource_path + "textures/venusmap.jpg");
+    earthNode.setTexture(m_resource_path + "textures/earthmap1k.jpg");
+    moonNode.setTexture(m_resource_path + "textures/moonmap1k.jpg");
+    marsNode.setTexture(m_resource_path + "textures/marsmap1k.jpg");
+    jupiterNode.setTexture(m_resource_path + "textures/jupiter2_1k.jpg");
+    saturnNode.setTexture(m_resource_path + "textures/saturnmap.jpg");
+    uranusNode.setTexture(m_resource_path + "textures/uranusmap.jpg");
+    neptunNode.setTexture(m_resource_path + "textures/neptunemap.jpg");
+    //std::cout <<  sunNode.getTexture()<< std::endl;
 
     SceneGraph sceneGraph{"SceneGraph",root};
     sceneGraph_ = sceneGraph;
@@ -387,7 +399,6 @@ void ApplicationSolar::initializeSceneGraph() {
 //std::cout << root.getPath() << std::endl;
 //std::cout << root.getDepth() << std::endl;
 
-    ////Assignment 4: saving textures to node
 
 }
 
@@ -521,7 +532,7 @@ void ApplicationSolar::renderSun() const {
 
 void ApplicationSolar::initializeTextures() {
     //loading textures:
-    pixel_data planet_textures = texture_loader::file(m_resource_path);
+    //pixel_data planet_textures = texture_loader::file(m_resource_path);
     //overwrite an instance of the pixel data structure
     //todo: Modify in the model loader::obj() function the last parameter in “model::NORMAL| model::TEXTCOORD”
 }
