@@ -171,6 +171,15 @@ glm::vec3 Node::getPlanetColor() {
     return planetColor_;
 }
 
+std::string Node::getTexture() {
+    texture_;
+}
+
+void Node::setTexture(std::string new_texture) {
+    texture_ = std::move(new_texture);
+}
+
+
 
 
 

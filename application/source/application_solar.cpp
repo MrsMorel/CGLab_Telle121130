@@ -4,6 +4,7 @@
 #include "utils.hpp"
 #include "shader_loader.hpp"
 #include "model_loader.hpp"
+#include "texture_loader.hpp"
 
 
 #include <glbinding/gl/gl.h>
@@ -31,7 +32,7 @@ ApplicationSolar::ApplicationSolar(std::string const& resource_path)
   initializeGeometry();
   generateStars(); //Assignment 2
   initializeShaderPrograms();
-
+  initializeTextures(); //Assignment 4
 }
 
 ApplicationSolar::~ApplicationSolar() {
@@ -385,6 +386,9 @@ void ApplicationSolar::initializeSceneGraph() {
     //sceneGraph_.printGraph();
 //std::cout << root.getPath() << std::endl;
 //std::cout << root.getDepth() << std::endl;
+
+    ////Assignment 4: saving textures to node
+
 }
 
 
@@ -513,6 +517,13 @@ void ApplicationSolar::renderStars() const {
 void ApplicationSolar::renderSun() const {
     glUseProgram(m_shaders.at("planet").handle);
 
+}
+
+void ApplicationSolar::initializeTextures() {
+    //loading textures:
+    pixel_data planet_textures = texture_loader::file(m_resource_path);
+    //overwrite an instance of the pixel data structure
+    //todo: Modify in the model loader::obj() function the last parameter in “model::NORMAL| model::TEXTCOORD”
 }
 
 // exe entry point

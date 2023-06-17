@@ -34,9 +34,12 @@ public:
     void setWorldTransform(const glm::mat4& worldTransform);
     void addChild(const std::shared_ptr<Node>& new_node); //adding node child
     Node removeChild(const std::string& name); // removing node child
-
+    //Assignment 3
     glm::vec3 getPlanetColor();
     void setPlanetColor(glm::vec3 const& color);
+    ///Assignment 4
+    std::string getTexture();
+    void setTexture(std::string new_texture);
 
 private:
     std::shared_ptr<Node> parent_;  //parent node
@@ -47,6 +50,7 @@ private:
     glm::mat4 localTransform_;  //local transformation matrix
     glm::mat4 worldTransform_;  //world transformation matrix
     glm::vec3 planetColor_;
+    std::string texture_; //path of texture file for Assignment 4
 };
 
 #endif //OPENGL_FRAMEWORK_NODE_H
