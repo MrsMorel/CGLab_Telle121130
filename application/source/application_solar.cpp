@@ -385,16 +385,16 @@ void ApplicationSolar::initializeSceneGraph() {
     root.addChild(std::make_shared<Node>(neptunNode));
 
 ////Assignment 4: saving textures to node
-    sunNode.setTexture(m_resource_path + "textures/sunmap.png");
-    mercuryNode.setTexture(m_resource_path + "textures/mercurymap.png");
-    venusNode.setTexture(m_resource_path + "textures/venusmap.png");
-    earthNode.setTexture(m_resource_path + "textures/earthmap1k.png");
-    moonNode.setTexture(m_resource_path + "textures/moonmap1k.png");
-    marsNode.setTexture(m_resource_path + "textures/marsmap1k.png");
-    jupiterNode.setTexture(m_resource_path + "textures/jupiter2_1k.png");
-    saturnNode.setTexture(m_resource_path + "textures/saturnmap.png");
-    uranusNode.setTexture(m_resource_path + "textures/uranusmap.png");
-    neptunNode.setTexture(m_resource_path + "textures/neptunemap.png");
+    sunNode.setTexture("textures/sunmap.png");
+    mercuryNode.setTexture( "textures/mercurymap.png");
+    venusNode.setTexture( "textures/venusmap.png");
+    earthNode.setTexture("textures/earthmap1k.png");
+    moonNode.setTexture("textures/moonmap1k.png");
+    marsNode.setTexture( "textures/marsmap1k.png");
+    jupiterNode.setTexture("textures/jupiter2_1k.png");
+    saturnNode.setTexture("textures/saturnmap.png");
+    uranusNode.setTexture("textures/uranusmap.png");
+    neptunNode.setTexture("textures/neptunemap.png");
     //std::cout <<  sunNode.getTexture()<< std::endl;
 
     SceneGraph sceneGraph{"SceneGraph",root};
@@ -534,7 +534,7 @@ void ApplicationSolar::renderSun() const {
 
 }
 
-void ApplicationSolar::initializeTextures() {
+void ApplicationSolar::initializeTextures() const {
 
     //todo: Modify in the model loader::obj() function the last parameter in “model::NORMAL| model::TEXTCOORD”
     //making new list for only planets
@@ -553,15 +553,39 @@ void ApplicationSolar::initializeTextures() {
     planets.push_back(sceneGraph_.getRoot().getChildren("Neptun"));
     planets.push_back(sceneGraph_.getRoot().getChildren("sun2"));
 
+    unsigned int counter = 0;
+
     for(auto const& planet: planets){
         //loading textures by overwrite an instance of the pixel data structure:
-        pixel_data planet_textures;
-        try{
-            planet_textures = texture_loader::file(planet->getTexture());
-            std::cout << "loading texture " + planet->getTexture() << std::endl;
-        } catch(std::exception const& error){
-            std::cout << "could not load texture " + planet->getName() << std::endl;
-            }
+        //planet_textures;
+        //try{
+         std::cout << "try loading texture " + planet->getTexture() << std::endl;
+            pixel_data planet_textures = texture_loader::file(m_resource_path + "textures/sunmap.png");
+           /*} catch(std::exception const& error){
+                std::cout << "could not load texture " + planet->getName() << std::endl;
+              } */
+
+
+        GLenum channel_type = planet_textures.channel_type;
+
+        glActiveTexture(GL_TEXTURE1 + counter);
+        counter++;
+        texture_object texture;
+        glGenTextures(1, &texture.handle);
+        texture.target = GL_TEXTURE_2D;
+
+        planet->setTextureObject(texture);
+
+        glBindTexture(texture.target, texture.handle);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, planet_textures.channels, (GLsizei) planet_textures.width, (GLsizei) planet_textures.height,
+                     0, planet_textures.channels, channel_type, planet_textures.ptr());
     }
 }
 

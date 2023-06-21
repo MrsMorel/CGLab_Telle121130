@@ -1,6 +1,8 @@
 #include <utility>
 
 #include "../include/GeometryNode.h"
+#include "structs.hpp"
+
 //default constructor
 GeometryNode::GeometryNode():
 Node(),geometry_{}{}
@@ -23,3 +25,5 @@ Node(), geometry_{std::move(geo)}{}
 GeometryNode::GeometryNode(std::string name, const glm::mat4& localTransformation, std::shared_ptr<Node> parent):
 Node{std::move(name), localTransformation,std::move(parent) }{
 }
+
+

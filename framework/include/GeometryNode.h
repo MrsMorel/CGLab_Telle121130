@@ -17,6 +17,7 @@ public:
     model getGeometry();
     void setGeometry(model geometry);
 
+
 private:
     model geometry_;
 };

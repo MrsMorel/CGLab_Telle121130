@@ -55,7 +55,7 @@ class ApplicationSolar : public Application {
   // camera projection matrix
   glm::fmat4 m_view_projection;
 
-  void initializeTextures();
+  void initializeTextures() const;
 };
 
 #endif

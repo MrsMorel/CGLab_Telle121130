@@ -178,7 +178,13 @@ std::string Node::getTexture() {
 void Node::setTexture(std::string new_texture) {
     texture_ = std::move(new_texture);
 }
+texture_object Node::getTextureObject() {
+    return textureObject_;
+}
 
+void Node::setTextureObject(const texture_object &newTextureObject) {
+    textureObject_ = newTextureObject;
+}
 
 
 
