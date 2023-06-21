@@ -42,10 +42,10 @@ void main() {
   vec3 diffuse = diffAngle * lightIntensity * planetColor;
 
   //texture color
-  vec4 texture_color = texture2D(YourTexture, passedTexturePoint);
+  vec3 texture_color = texture2D(YourTexture, passedTexturePoint).xyz;
 
   //addition of light
-  out_Color = texture_color * vec4((  diffuse + specular), 1.0);
+  out_Color = vec4((texture_color * ambientColor +  texture_color*diffuse + specular), 1.0);
 
 
 }

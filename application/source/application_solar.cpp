@@ -567,12 +567,10 @@ void ApplicationSolar::initializeTextures() const {
                 std::cout << "could not load texture " + planet->getName() << std::endl;
               } */
 
-
-        GLenum channel_type = planet_textures.channel_type;
-        //initialise texture
+           //initialise texture
         glActiveTexture(GL_TEXTURE1 + counter);
         counter++;
-        texture_object texture{};
+        texture_object texture;
         glGenTextures(1, &texture.handle); //per reference
         //planet->setTextureObject(texture);
         //bind texture
@@ -585,9 +583,11 @@ void ApplicationSolar::initializeTextures() const {
         //wrapping:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
         //Define Texture Data and Format:
         glTexImage2D(GL_TEXTURE_2D, 0, planet_textures.channels, (GLsizei)planet_textures.width, (GLsizei)planet_textures.height,
                      0, planet_textures.channels, planet_textures.channel_type, planet_textures.ptr());
+        //TODO: set basis level so texture works as intended
     }
 }
 
