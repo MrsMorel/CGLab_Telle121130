@@ -179,6 +179,8 @@ void ApplicationSolar::initializeShaderPrograms() {
   m_shaders.at("planet").u_locs["lightIntensity"] = -1;
   m_shaders.at("planet").u_locs["colorSpecular"] = -1;
   m_shaders.at("planet").u_locs["cameraPosition"] = -1;
+  /// Assignment 4:
+  m_shaders.at("planet").u_locs["YourTexture"] = -1;
 
     m_shaders.emplace("light", shader_program{{{GL_VERTEX_SHADER,m_resource_path + "shaders/light.vert"},
                                                 {GL_FRAGMENT_SHADER, m_resource_path + "shaders/light.frag"}}});
@@ -188,7 +190,7 @@ void ApplicationSolar::initializeShaderPrograms() {
     m_shaders.at("light").u_locs["ViewMatrix"] = -1;
     m_shaders.at("light").u_locs["ProjectionMatrix"] = -1;
 
-  /// Assignment 4:
+
 
 }
 
@@ -533,7 +535,7 @@ void ApplicationSolar::renderSun() const {
     glUseProgram(m_shaders.at("planet").handle);
 
 }
-
+/////// Assignment 4:
 void ApplicationSolar::initializeTextures() const {
 
     //todo: Modify in the model loader::obj() function the last parameter in “model::NORMAL| model::TEXTCOORD”
@@ -551,7 +553,7 @@ void ApplicationSolar::initializeTextures() const {
     planets.push_back(sceneGraph_.getRoot().getChildren("Saturn"));
     planets.push_back(sceneGraph_.getRoot().getChildren("Uranus"));
     planets.push_back(sceneGraph_.getRoot().getChildren("Neptun"));
-    planets.push_back(sceneGraph_.getRoot().getChildren("sun2"));
+    //planets.push_back(sceneGraph_.getRoot().getChildren("sun2"));
 
     unsigned int counter = 0;
 
@@ -559,33 +561,33 @@ void ApplicationSolar::initializeTextures() const {
         //loading textures by overwrite an instance of the pixel data structure:
         //planet_textures;
         //try{
-         std::cout << "try loading texture " + planet->getTexture() << std::endl;
-            pixel_data planet_textures = texture_loader::file(m_resource_path + "textures/sunmap.png");
+         std::cout << "try loading texture " + planet->getName() << std::endl;
+         pixel_data planet_textures = texture_loader::file(m_resource_path + "textures/"+ planet->getName()+ ".jpg");
            /*} catch(std::exception const& error){
                 std::cout << "could not load texture " + planet->getName() << std::endl;
               } */
 
 
         GLenum channel_type = planet_textures.channel_type;
-
+        //initialise texture
         glActiveTexture(GL_TEXTURE1 + counter);
         counter++;
-        texture_object texture;
-        glGenTextures(1, &texture.handle);
-        texture.target = GL_TEXTURE_2D;
+        texture_object texture{};
+        glGenTextures(1, &texture.handle); //per reference
+        //planet->setTextureObject(texture);
+        //bind texture
+        glBindTexture(GL_TEXTURE_2D, texture.handle);
 
-        planet->setTextureObject(texture);
-
-        glBindTexture(texture.target, texture.handle);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
+        //Define Texture Sampling Parameters (mandatory)
+        //filtering:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        glTexImage2D(GL_TEXTURE_2D, 0, planet_textures.channels, (GLsizei) planet_textures.width, (GLsizei) planet_textures.height,
-                     0, planet_textures.channels, channel_type, planet_textures.ptr());
+        //wrapping:
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        //Define Texture Data and Format:
+        glTexImage2D(GL_TEXTURE_2D, 0, planet_textures.channels, (GLsizei)planet_textures.width, (GLsizei)planet_textures.height,
+                     0, planet_textures.channels, planet_textures.channel_type, planet_textures.ptr());
     }
 }
 

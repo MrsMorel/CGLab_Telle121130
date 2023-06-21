@@ -5,7 +5,7 @@ out vec4 out_Color;
 
 //Assignment 3: Lights
 uniform vec3 planetColor; //diffuse color
-uniform vec3 ambientColor;
+uniform vec3 ambientColor; //planet color
 uniform float lightIntensity;
 uniform vec3 colorSpecular;
 uniform vec3 lightPosition; //light direction
@@ -18,12 +18,14 @@ vec3 color2 = vec3(0.0,1.0,0.0);
 vec3 color3 = vec3(0.0,0.0,1.0);
 float threshold1 = 0.6;
 float threshold2 = 0.3;
-
-
 out vec3 passedColor;
-
 //Newly add(Cel-Shading)
 out vec3 celShadingColor;
+
+//Assignment 4:
+in vec2 passedTexturePoint;
+uniform sampler2D YourTexture;
+
 
 void main() {
 //Blinn-Phong lightning model
@@ -39,16 +41,13 @@ void main() {
   float diffAngle = max(dot(pass_Normal, lightVec), 0.0f);
   vec3 diffuse = diffAngle * lightIntensity * planetColor;
 
-  //Newly add
-  //Intensity discretization based on diffuseColor(Cel-Shading)
-  //float brightness = calculateBrightness(diffuse);
-  //vec3 celShadedColor = discretizeColor(brightness);
+  //texture color
+  vec4 texture_color = texture2D(YourTexture, passedTexturePoint);
 
   //addition of light
-  out_Color = vec4((ambientColor + diffuse + specular), 1.0);
+  out_Color = texture_color * vec4((  diffuse + specular), 1.0);
 
-  //Newly add(Cel-Shading)
-  //celShadingColor = celShadedColor;
+
 }
 
 //Newly add(Cel-Shading)
