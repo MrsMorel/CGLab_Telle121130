@@ -45,7 +45,7 @@ void main() {
   vec3 texture_color = texture2D(YourTexture, passedTexturePoint).xyz;
 
   //addition of light
-  out_Color = vec4((texture_color * ambientColor +  texture_color*diffuse + specular), 1.0);
+  out_Color = vec4((texture_color +  texture_color * diffuse + specular), 1.0);
 
 
 }

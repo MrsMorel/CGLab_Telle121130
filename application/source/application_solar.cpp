@@ -483,6 +483,9 @@ void ApplicationSolar::renderPlanets() const {
     }
 
     float time = 10.0f;
+    ///Assignment 4:
+    unsigned int counter = 0;
+    int sampler_location = glGetUniformLocation(m_shaders.at("planet").handle, "YourTexture");
 
     for ( const std::shared_ptr<Node>& i : planets) {
 
@@ -514,6 +517,14 @@ void ApplicationSolar::renderPlanets() const {
 
         //bind the VAO to draw
         glBindVertexArray(planet_object.vertex_AO);
+
+        ////Assignment 4:
+        //texture_object texture = i->getTexture();
+        glActiveTexture(GL_TEXTURE1 + counter);
+        counter++;
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glUniform1i(sampler_location, 0);
+
         //draw bound vertex array using bound shader
         glDrawElements(planet_object.draw_mode, planet_object.num_elements, model::INDEX.type, NULL);
 
@@ -568,8 +579,8 @@ void ApplicationSolar::initializeTextures() const {
               } */
 
            //initialise texture
-        glActiveTexture(GL_TEXTURE1 + counter);
-        counter++;
+        //glActiveTexture(GL_TEXTURE1 +counter);
+        //counter++;
         texture_object texture;
         glGenTextures(1, &texture.handle); //per reference
         //planet->setTextureObject(texture);
